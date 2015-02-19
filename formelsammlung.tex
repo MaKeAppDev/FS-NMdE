@@ -1,7 +1,7 @@
-% Formelsammlung ...
+% Formelsammlung Numerische Methoden der Elektrotechnik
 %
 % Geschrieben im SS 2014 an der TU München
-% von Markus Hofbauer und Kevin Meyer für LaTeX4EI (latex4ei.de)
+% von Markus Hofbauer, Kevin Meyer und Benedikt Schmidt für LaTeX4EI (latex4ei.de)
 % Kontakt: latex@kevin-meyer.de oder via Kontaktformular auf http://latex4ei.de
 
 % Dokumenteinstellungen
@@ -16,6 +16,41 @@
 \usepackage{multirow}
 \usetikzlibrary{arrows, calc, intersections}
 \usepackage{hyperref}
+\usepackage{listings}
+\usepackage{calc}
+
+% Für code
+\definecolor{COMMENTGREEN}{HTML}{228B22}
+\definecolor{MATLABBACKGROUND}{HTML}{FCFCDC}
+\lstset{ %
+language=Matlab,						% choose the language of the code
+basicstyle=\ttfamily,					% the size of the fonts that are used for the code
+emphstyle=\color{yellow}\ttfalily,
+keywordstyle=\color{blue}\ttfamily,
+stringstyle=\color{magenta}\ttfamily,
+commentstyle=\color{COMMENTGREEN}\ttfamily,
+xleftmargin=10.3pt,						% distance to margin left
+xrightmargin=-3pt,						% distance to margin right
+%linewidth=\widthof{\sectionbox{}}		% this would be better instead of left and right margin
+aboveskip=0.6\baselineskip,
+belowskip=0\baselineskip,
+numbers=left,                   		% where to put the line-numbers
+framexleftmargin=1.5em,					% distance to xleftmargin
+numberstyle=\ttfamily\footnotesize,		% the size of the fonts that are used for the line-numbers
+stepnumber=1,							% the step between two line-numbers. If it is 1 each line will be numbered
+numbersep=5pt,							% how far the line-numbers are from the code
+backgroundcolor=\color{MATLABBACKGROUND},	% choose the background color. You must add \usepackage{color}
+showspaces=false,						% show spaces adding particular underscores
+showstringspaces=false,					% underline spaces within strings
+showtabs=false,							% show tabs within strings adding particular underscores
+frame=single,							% adds a frame around the code (Box) (Für top und bottom rule set option to "lines")
+rulecolor=\color{gray},					% color of framebox rule
+tabsize=4,								% sets default tabsize to 2 spaces
+captionpos=b,							% sets the caption-position to bottom
+breaklines=true,						% sets automatic line breaking
+breakatwhitespace=false,				% sets if automatic breaks should only happen at whitespace
+escapeinside={\%*}{*)}					% if you want to add a comment within your code
+}
 
 % tabularx definition
 \newcolumntype{C}{>{\centering\arraybackslash}X}
@@ -23,25 +58,13 @@
 
 % SI-Zahlen mit Komma als Dezimaltrenner
 \sisetup{locale=DE}
-\sisetup{range-phrase = \ldots}
-\sisetup{range-units = single}
-
-% SI-Einheiten
-\DeclareSIUnit \voltampere {VA}
-\DeclareSIUnit \var {Var}
-\DeclareSIUnit \newtonmeter {Nm}
-\DeclareSIUnit \voltsecond {Vs}
-\DeclareSIUnit \amperesecond {As}
-
-% Nicht neuen, sondern alten Vector benutzen
-\let\newvec = \vec
-\let\vec = \oldvec
-
-% Weitere Definitionen
-\renewcommand{\ggT}[1]{\ensuremath{\operatorname{ggT}\left\{#1\right\}}}
 
 % Eigener Inhalt für Center-Teil des Footers
-\fancyfoot[C]{von Markus Hofbauer und Kevin Meyer - Kontakt:  \href{mailto:latex@kevin-meyer.de}{\textit{latex@kevin-meyer.de}}}
+\fancyfoot[C]{von Markus Hofbauer, Kevin Meyer und Benedikt Schmidt - Kontakt:  \href{mailto:latex@kevin-meyer.de}{\textit{latex@kevin-meyer.de}}}
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\cond}{cond}
+\DeclareMathOperator{\rang}{rang}
 
 % Dokumentbeginn
 % ======================================================================
@@ -52,9 +75,967 @@
 
 % Aufteilung in Spalten
 \begin{multicols*}{4}
-\fstitle{Vorlage}
+\fstitle{Numerische \mbox{Methoden der} \mbox{Elektrotechnik}}
 
-\section{Inhalt}
+\section{Grundlagen}
+\sectionbox{
+\tablebox{
+	\begin{tabular*}{\columnwidth}{@{\extracolsep\fill}lp{5cm}@{}}
+	\ctrule
+	Numerik & liefert eine zahlenmäßige Lösung eines Problems mit einem Algorithmus.\\
+	Kondition & Ein Maß wie stark sich Eingabefehler auf die Ausgabe auswirken. $\kappa = \frac{\norm{\delta f}}{\norm{\delta x}} \ra |f'(x)|$\\
+	$f(x)$ & Mathematisches Problem $f$ mit exakter Eingabe $x$\\
+	$\tilde f(\tilde x)$ & Numerischer Algorithmus $\tilde f$ mit gerundeter Eingabe $\tilde x$\\
+	\cbrule
+	\end{tabular*}
+}
+}
+
+\sectionbox{
+\subsection{Spektralradius}
+	\textbf{Spektralradius $\rho(\ma A)$ einer Matrix $\ma A$:} Betragsmäßig größter Eigenwert. \\
+	Konvergenzbeweis aller Verfahren: Gershgorinkreise um die Null mit $r \le 1$
+	\begin{equation*}
+		\rho(\ma{A}) = \max_i \abs{\lambda_i}
+	\end{equation*}
+
+\subsection{Diagonaldominanz}
+Diagonalelemente sind größer als die restlichen Elemente der selben Zeile:\\
+\begin{equation*}
+\ma{A} = (a_{ij}) \begin{aligned} \text{diagonaldominant} \\ \text{strikt diagonaldominant}\end{aligned} \Leftrightarrow \abs{a_{ii}} \begin{aligned} \ge \\ > \end{aligned} \sum\limits_{j = 1, j \ne i}^n \abs{a_{ij}}\ \forall i
+\end{equation*}
+
+\subsection{Definitheit}
+\begin{equation*}
+\ma{A} \begin{aligned} \text{positiv definit} \\ \text{ positiv semidefinit}\end{aligned} \Leftrightarrow \lambda_i \begin{aligned} > \\ \ge \end{aligned} 0\ \forall i \qquad\text{bzw.}\qquad\vec{x}^T \ma{A} \vec{x} \begin{aligned} > \\ \ge \end{aligned} 0\ \forall \vec{x} \ne 0
+\end{equation*}
+}
+
+\sectionbox{
+	\subsection{Kondition}
+	\symbolbox{
+		\begin{tabularx}{\columnwidth}{lXlX}
+			$y = f(x)$ & Unbekannte & $x$ & Problemdaten
+		\end{tabularx}
+	}
+	$\kappa_{\ir abs}(x) = \abs{f'(x)}$ \qquad\qquad $\kappa_{\ir rel}(x) = \abs{\frac{f'(x)}{\frac{f(x)}{x}}} = \frac{\abs{f'(x)} \cdot \abs{x}}{\abs{f(x)}}$\\
+	Falls $\kappa_{\ir rel} \ll 100$: gute Konditionierung\\
+	\\
+	Verkettung $h = g(f(x))$ \quad $\kappa^h_{\ir abs}(x) = \kappa^g_{\ir abs}(f(x))\kappa^f_{\ir abs}(x)$\\
+	\begin{equation*}
+		\cond(\ma{A}) = \norm{\ma{A}^{-1}} \cdot \norm{\ma{A}}
+	\end{equation*}
+
+	\subsection{Fehler}
+	Absolut: $\norm{\tilde f(x) - f(x)}$ \qquad\qquad Relativ: $\frac{\norm{\tilde f(x) - f(x)}}{\norm{f(x)}}$
+
+	\subsection{Residuum}
+	bezeichnet die Abweichung vom gewünschten Ergebnis, wenn Näherungslösungen eingesetzt werden.\\
+	Residuum klein $\Rightarrow$ relativer Fehler $\ll 1$.
+	\begin{equation*}
+		\vec r = \vec b - \ma A\vec x
+	\end{equation*}
+}
+
+\sectionbox{
+\subsection{Parametrisierung einer Geraden}
+\begin{tabularx}{\columnwidth}{CCC}
+\multirow{2}{*}{$g(x) = a x + b$} & $y_1 = g(x_1)$ & $a = \frac{y_1 - y_2}{x_1 - x_2}$\\
+& $y_2 = g(x_2)$ & $b = \frac{x_1 y_2 - x_2 y_1}{x_1 - x_2}$
+\end{tabularx}
+
+\subsection{Schnittpunkt zweier Geraden}
+\begin{tabularx}{\columnwidth}{CC}
+$a_{11}x_1 + a_{12}x_2 = b_1$ & $x_1 = \frac{a_{22}b_1 - a_{12}b_2}{a_{11}a_{22}-a_{12}a_{21}}$\\
+$a_{21}x_1 + a_{22}x_2 = b_2$ & $x_2 = \frac{-a_{21}b_1 + a_{11}b_2}{a_{11}a_{22}-a_{12}a_{21}}$
+\end{tabularx}
+}
+
+\sectionbox{
+\subsection{Matrizen}
+\begin{tabularx}{\columnwidth}{LX}
+$\Sp\ma A = \sum a_{ii} = \sum\lambda_i$  & $\det\ma A = \prod\lambda_i$\\
+$(\ma A + \ma B)^T = \ma A^T + \ma B^T$ & $(\ma A \cdot \ma B)^T = \ma B^T \cdot \ma A^T$\\
+${(\ma A^T)}^{-1} = {(\ma A^{-1})}^T$ & $(\ma A\ma B)^{-1} = \ma B^{-1}\ma A^{-1}$
+\end{tabularx}
+
+\subsubsection{Dimensionen $A \in\mathbb{K}^{m\times n}$}
+\begin{tabularx}{\columnwidth}{LX}
+$\rang\ma A = \rang\ma A^T$ & \\
+$n = \rang\ma A + \dim\ker\ma A$ & $m = \rang\ma A^T + \dim\ker\ma A^T$
+\end{tabularx}
+
+\subsubsection{Spezielle Matrizen $A \in\mathbb{K}^{m\times n}$}
+\begin{tabularx}{\columnwidth}{LlXX@{}}
+Symmetrisch & $\ma A = \ma A^T$ & Schiefsymmetrisch & $\ma A = -\ma A^T$\\
+Orthogonal & $\ma A\ma A^T = \ma I$ & $\det(\ma A) = \pm 1$ & $\ma A^{-1} = \ma A^T$
+\end{tabularx}
+}
+
+\sectionbox{
+\subsubsection{Matrixnorm}
+\begin{tabularx}{\columnwidth}{LX}
+	$\norm{\ma{A}} = 0 \Rightarrow \ma{A} = 0$ & $\norm{\alpha \ma{A}} = \abs{\alpha} \norm{\ma{A}}$\\
+	$\norm{\ma{A} + \ma{B}} \le \norm{\ma{A}} + \norm{\ma{B}}$ & $\norm{\ma{A} \cdot \ma{B}} \le \norm{\ma{A}} \cdot \norm{\ma{B}}$
+\end{tabularx}
+\begin{tabular}{@{}r@{ = }ll}
+	$\norm{\ma{A}}_M$ & $n\cdot\underset{i,j}{\max}\abs{a_{ij}}$ & Gesamtnorm, Matrixnorm\\
+	$\norm{\ma{A}}_\infty$ & $\underset{i}{\max}\sum\limits_{j=1}^n\abs{a_{ij}}$ & Zeilennorm (max Zeilensumme)\\
+	$\norm{\ma{A}}_1$ & $\underset{j}{\max}\sum\limits_{i=1}^n\abs{a_{ij}}$ & Spaltennorm (max Spaltensumme)\\
+	$\norm{\ma{A}}_E$ & $\sqrt{\sum\limits_{i=1}\sum\limits_{j=1}\abs{a_{ij}}^2}$ & Frobeniusnorm $(||\ma{I}||_E = \sqrt{n})$\\
+	$\norm{\ma{A}}_\lambda$ & $\sqrt{\lambda_\text{max}(\ma{A}^T\cdot\ma{A})}$ & Spektralnorm, Hilbertnorm \\
+\end{tabular}
+
+\subsubsection{Determinante von $A\in \mathbb K^{n\times n}$: $\det(A)=|A|$}
+$\det\begin{pmatrix}\ma A & \ma 0\\ \ma C&\ma D\end{pmatrix}=\det\begin{pmatrix}\ma A&\ma B\\\ma 0&\ma D\end{pmatrix}=\det(\ma A)\cdot\det(\ma D)$ \\
+\begin{tabular*}{\columnwidth}{@{\extracolsep\fill}ll}
+$\det(\ma A) = \det(\ma A^T)$ & $\det(\ma A^{-1}) = \det(\ma A)^{-1}$
+\end{tabular*}
+$\det(\ma A\ma B) = \det(\ma A)\det(\ma B) = \det(\ma B)\det(\ma A) = \det(\ma B\ma A)$\\
+Hat $\ma A$ 2 linear abhäng. Zeilen/Spalten $\Rightarrow |\ma A|=0$ \\
+Entwicklung. n. $i$ter Zeile: $|\ma A|=\sum\limits_{i=1}^n (-1)^{i+j} \cdot a_{ij} \cdot |\ma A_{ij}|$\\
+Inverse $2\times 2$: \quad $\mat{a & b\\ c & d}^{-1} = \frac{1}{ad-bc} \mat{d & -b\\ -c& a}$
+}
+
+\sectionbox{
+\subsection{Jacobi-Matrix $\vec f: \mathbb{R}^n \rightarrow \mathbb{R}^m$}
+\begin{equation*}
+	\frac{\partial }{\partial \vec x} \vec f(\vec x) = \ma J_f (x) =
+	\begin{bmatrix}
+		\frac{\partial f_1}{\partial x_1} & \hdots & \frac{\partial f_1}{\partial x_n} \\
+		\vdots & & \vdots \\
+		\frac{\partial f_m}{\partial x_1} & \hdots & \frac{\partial f_m}{\partial x_n}
+	\end{bmatrix} =
+	\begin{bmatrix}
+		(\nabla f_1)^T \\
+		\vdots \\
+		(\nabla f_m)^T
+	\end{bmatrix}
+\end{equation*}
+}
+
+\sectionbox{
+\subsection{Wichtige Formeln}
+\setlength{\tabcolsep}{0pt}
+\tablebox{
+\begin{tabular*}{\columnwidth}{@{\extracolsep\fill}ll@{}} \ctrule
+Dreiecksungleichung: &$\big|\! \abs{x}- \abs{y}\!\big| \le \abs{x \pm y} \le \abs{x} + \abs{y}$\\
+Cauchy-Schwarz-Ungleichung: & $\left| \vec x^\top \bdot \vec y \right| \le \| \vec x\| \cdot \| \vec y\|$ \\
+Bernoulli-Ungleichung: & $(1+x)^n \ge 1+nx$\\ \cmrule
+Arithmetische Summenformel &  $\sum \limits_{k=1}^{n} k = \frac{n (n+1)}{2} $ \\
+Geometrische Summenformel &  $ \sum \limits_{k=0}^{n} q^k = \frac{1 - q^{n+1}}{1-q}$ \\
+Binomialkoeffizient & $\binom nk = \binom n{n-k} = \frac{n!}{k! \cdot (n-k)!}$\\
+\ctrule
+\end{tabular*} }
+}
+
+\sectionbox{
+\subsection{Sinus, Cosinus \quad $\sin^2(x) \bs + \cos^2(x) = 1$}
+\begin{equation*}
+	e^{\j x} = \cos (x) + \j \cdot \sin(x)
+\end{equation*}
+\setlength{\tabcolsep}{4pt}
+\tablebox{
+\begin{tabular*}{\columnwidth}{@{\extracolsep\fill}c|c|c|c|c||c|c|c|c@{}} \ctrule
+$x$ & $0$ & $\pi / 6$ & $\pi / 4$ & $\pi / 3$ & $\frac{1}{2}\pi$ & $\pi$ & $\frac{3}{2}\pi$ & $2 \pi$ \\
+$\varphi$ & $\SI{0}{\degree}$ & $\SI{30}{\degree}$ & $\SI{45}{\degree}$ & $\SI{60}{\degree}$ & $\SI{90}{\degree}$ & $\SI{180}{\degree}$ & $\SI{270}{\degree}$ & $\SI{360}{\degree}$ \\ \cmrule
+$\sin$ & $0$ & $\frac{1}{2}$ & $\frac{1}{\sqrt{2}}$ & $\frac{\sqrt 3}{2}$ & $1$ & $0$ & $-1$ & $0$ \\
+$\cos$ & $1$ & $\frac{\sqrt 3}{2}$ & $\frac{1}{\sqrt 2}$ & $\frac{1}{2}$ & $0$ & $-1$ & $0$ & $1$ \\
+$\tan$ & $0$ & $\frac{\sqrt{3}}{3}$ &	$1$	&	$\sqrt{3}$ & $\pm \infty$ & $0$ & $\mp \infty$ & $0$\\ \cbrule
+\end{tabular*} }\\
+\begin{tabular*}{\columnwidth}{@{\extracolsep\fill}ll@{}}
+	Additionstheoreme &  Stammfunktionen\\
+ 	$\cos (x - \frac{\pi}{2}) = \sin x$ & $\int x \cos(x) \diff x = \cos(x) + x \sin(x)$\\
+ 	$\sin (x + \frac{\pi}{2}) = \cos x$ & $\int x \sin(x) \diff x = \sin(x) - x \cos(x)$\\
+ 	$\sin 2x = 2 \sin x \cos x $  & $\int \sin^2(x) \diff x = \frac12 \bigl(x - \sin(x)\cos(x) \bigr)$\\
+ 	$\cos 2x = 2\cos^2 x - 1$  & $\int \cos^2(x) \diff x = \frac12 \bigl(x + \sin(x)\cos(x) \bigr)$\\
+ 	$\sin(x) = \tan(x)\cos(x)$ & $\int \cos(x)\sin(x) = -\frac12 \cos^2(x)$ \\
+\end{tabular*}\\[1em]
+	\textbf{Sinus/Cosinus Hyperbolicus} $\sinh, \cosh$\\
+	\begin{tabular*}{\columnwidth}{@{\extracolsep\fill}ll@{}}
+	$\sinh x = \frac{1}{2}(e^x -e^{-x})= - \j \, \sin(\j x)$ & $\cosh^2 x  \bs - \sinh^2 x = 1$\\
+	$\cosh x  = \frac{1}{2}(e^x +e^{-x})= \cos(\j x)$ & $\cosh x + \sinh x = e^{x}$\\
+	\end{tabular*}\\
+	\textbf{Kardinalsinus} $\mathrm{si}(x) = \frac{\sin(x)}{x}$ \qquad \textbf{genormt:} $\sinc(x) = \frac{\sin(\pi x)}{\pi x}$
+}
+
+\sectionbox{
+	\subsection{Integrale $\int e^x\;\mathrm dx = e^x = (e^x)'$}
+	\begin{tabularx}{\columnwidth}{lX}
+	Partielle Integration: & $\int uw'=uw-\int u'w$\\
+	Substitution: & $\int f(g(x)) g'(x)\diff x=\int f(t)\diff t$
+	\end{tabularx}
+	\tablebox{
+	\renewcommand{\arraystretch}{1.6}
+	\begin{tabular*}{\columnwidth}{@{\hspace{5mm}}c@{\extracolsep\fill}c@{\extracolsep\fill}c@{\hspace{5mm}}} \ctrule
+		$F(x)$ & $f(x)$ & $f'(x)$ \\ \cmrule
+		$\frac{1}{q+1}x^{q+1}$ & $x^q$ & $qx^{q-1}$ \\
+		\raisebox{-0.2em}{$\frac{2\sqrt{ax^3}}{3}$} & $\sqrt{ax}$ & \raisebox{0.2em}{$\frac{a}{2\sqrt{ax}}$}\\
+		$x\ln(ax) -x$ & $\ln(ax)$ & $\textstyle \frac{a}{x}$\\
+		$\frac{1}{a^2} e^{ax}(ax- 1)$ & $x \cdot e^{ax}$ & $e^{ax}(ax+1)$ \\
+		$\frac{a^x}{\ln(a)}$ & $a^x$ & $a^x \ln(a)$ \\
+		$-\cos(x)$ & $\sin(x)$ & $\cos(x)$\\
+		$\cosh(x)$ & $\sinh(x)$ & $\cosh(x)$\\
+		$-\ln |\cos(x)|$ & $\tan(x)$ & $\frac{1}{\cos^2(x)}$ \\ \cbrule
+	\end{tabular*} }\\
+
+	\begin{tabularx}{\columnwidth}{Ll@{}}
+	\multicolumn{2}{c}{$\int e^{at} \sin(bt) \diff t = e^{at} \frac{a \sin(bt) + b \cos(bt)}{a^2 + b^2}$}\\
+	$\int \frac{\diff t}{\sqrt{at+b}} = \frac{2 \sqrt{at+b}}{a}$ & $\int t^2 e^{at} \diff t = \frac{(ax-1)^2+1}{a^3} e^{at}$\\
+	$\int t e^{at} \diff t = \frac{at-1}{a^2} e^{at}$ & $\int x e^{ax^2} \diff x = \frac{1}{2a} e^{ax^2}$\\
+	\end{tabularx}
+}
+
+\sectionbox{
+\subsection{Exponentialfunktion und Logarithmus}
+\begin{tabular*}{\columnwidth}{l@{\extracolsep\fill}ll}
+	$a^x = e^{x \ln a}$ & $\log_a x = \frac{\ln x}{\ln a}$ & $\ln x \le x -1$\\
+	$\ln(x^{a}) = a \ln(x)$ & $\ln(\frac{x}{a}) = \ln x - \ln a$ & $\log(1) = 0$\\
+\end{tabular*}
+
+\subsection{Reihen}
+\begin{tabularx}{\columnwidth}{CCC}
+$\underset{\text{Harmonische Reihe}}{\sum\limits_{n=1}^\infty \frac{1}{n} \ra \infty}$ & $\underset{\text{Geometrische Reihe}}{\sum\limits_{n=0}^\infty q^n \stackrel{|q|<1}= \frac{1}{1-q}}$ & $\underset{\text{Exponentialreihe}}{\sum\limits_{n = 0}^{\infty} \frac{z^n}{n!} = e^z}$
+\end{tabularx}
+}
+
+\section{Lösung nichtlinearer Gleichungen}
+\sectionbox{
+\subsection{Fixpunktiteration}
+\begin{equation*}
+	x^{(k + 1)} = \Phi(x^{(k)})
+\end{equation*}
+\begin{equation*}
+	x^\star = \Phi(x^\star)
+\end{equation*}
+Falls $\abs{\Phi'(x^\star)} < 1 \Rightarrow$ Konvergenz bzw. stabiler Fixpunkt \\
+Falls $0 < \abs{\Phi'(x^\star)} < 1 \Rightarrow$ lineare Konvergenz mit
+\begin{equation*}
+	\varepsilon^{(k + 1)} \approx \Phi'(x^\star) \varepsilon^{(k)}
+\end{equation*}
+Falls $\Phi'(x^\star) = 0$ und $\Phi''(x^\star) \ne 0 \Rightarrow$ quadratische Konvergenz \\
+\textbf{Allgemein:} Konvergenzordnung $n \Leftrightarrow$\\ $\Phi'(x^\star) = \Phi''(x^\star) = \ldots = \Phi^{(n - 1)}(x^\star) = 0$ und $\Phi^{(n)}(x^\star) \ne 0$
+}
+
+\sectionbox{
+\subsection{Newton-Raphson}
+	Funktion durch Gerade annähern und Nullstelle bestimmen. An dieser Stelle den Vorgang wiederholen.\\
+\textbf{Ausgangsproblem:}
+\begin{equation*}
+	f(x) = 0
+\end{equation*}
+\begin{equation*}
+	x^{(k + 1)} = x^{(k)} - \frac{f(x^{(k)})}{f'(x^{(k)})}
+\end{equation*}
+
+\subsubsection{Konvergenz}
+Falls $f'(x^\star) \ne 0$ (einfache Nullstelle) $\Rightarrow$ quadratische Konvergenz mit
+\begin{equation*}
+	\varepsilon^{(k + 1)} = \frac{1}{2} \frac{f''(x^\star)}{f'(x^\star)} {\varepsilon^{(k)}}^2
+\end{equation*}
+Falls $f'(x^\star) = 0$ (Nullstellengrad $n > 1$) $\Rightarrow$ lineare Konvergenz mit
+\begin{equation*}
+\textbf{Konvergenzfaktor} = \frac{n-1}{n}
+\end{equation*}
+
+\subsubsection{Sekanten-Methode}
+Falls die Auswertung von $f'(x)$ vermieden werden soll:
+\begin{equation*}
+	x^{(k + 1)} = x^{(k)} - \frac{f(x^{(k)}) \left( x^{(k)} - x^{(k - 1)} \right)}{f(x^{(k)}) - f(x^{(k - 1)})}
+\end{equation*}
+
+\subsubsection{Mehrdimensional}
+\textbf{Theoretisch:}
+\begin{equation*}
+	\vec x^{(k + 1)} = \vec x^{(k)} - \ma J^{-1}_{\vec f}\left (\vec x^{(k)}\right ) \vec f(x^{(k)})
+\end{equation*}
+\textbf{Praktisch:}
+\begin{equation*}
+	\ma J_{\vec f}\left (\vec x^{(k)}\right ) \vec x^{(k + 1)} = \ma J_{\vec f}\left (\vec x^{(k)}\right )\cdot \left (\vec x^{(k)} - \vec f(x^{(k)}\right )
+\end{equation*}
+}
+
+\section{Lösung linearer Gleichungssysteme}
+\sectionbox{
+\textbf{Ausgangsproblem:}
+\begin{equation*}
+	\ma{A} \vec{x} = \vec{b}
+\end{equation*}
+\tablebox{
+	\begin{tabularx}{\columnwidth}{lX}
+		\ctrule
+		$\ma{A} = \ma{M} - \ma{N}$ & Systemmatrix\\
+		$\ma{D}$ & Diagonalmatrix \texttt{diag(diag(}$\ma{A}$\texttt{))}\\
+		$\ma{L}$ & Linke untere Dreiecksmatrix \texttt{tril(}$\ma{A},-1$\texttt{)}\\
+		$\ma{U}$ & Rechte obere Dreiecksmatrix \texttt{triu(}$\ma{A},1$\texttt{)}\\
+		\cbrule
+	\end{tabularx}
+}
+}
+
+\sectionbox{
+\subsection{Jacobi-Verfahren}
+Konvergiert falls $\rho(\ma{K}_j) < 1$ oder falls $\ma{A}$ strikt diagonaldominant\\
+\begin{equation*}
+	\ma{K}_j = \ma{D}^{-1} (- \ma{L} - \ma{U})
+\end{equation*}
+\emph{Matrixdarstellung:}
+\begin{equation*}
+	\vec{x}^{(k + 1)} = \ma{K}_j \vec{x}^{(k)} + \ma{D}^{-1} \vec{b}
+\end{equation*}
+\emph{Komponentenweise:}
+\begin{equation*}
+	x_i^{(k + 1)} = \frac{1}{a_{ii}} \left( b_i - \sum_{j = 1, j \ne i}^n a_{ij} x_{j}^{(k)} \right)
+\end{equation*}
+\textbf{Vorkonditionierung:}
+\begin{equation*}
+	\ma P = \ma D^{-1}\quad\Rightarrow\quad\ma P\ma A \vec x = \ma P\vec b
+\end{equation*}
+}
+
+\sectionbox{
+\subsection{Gauß-Seidel-Verfahren}
+	Unterschied zu Jacobi: Komponentenweise Berechnung von $\vec x$ mit bereits iterierten Werten. (Kürzere Iterationszyklen)
+\begin{equation*}
+	\ma{K}_{gs} = - (\ma{D} + \ma{L})^{-1} \ma{U}
+\end{equation*}
+\emph{Matrixdarstellung:}
+\begin{equation*}
+	\vec{x}^{(k + 1)} = \ma{K}_{gs} \vec{x}^{(k)} + (\ma{D} + \ma{L})^{-1} \vec{b}
+\end{equation*}
+\emph{Komponentenweise:}
+\begin{equation*}
+	x_i^{(k + 1)} = \frac{1}{a_{ii}} \left( b_i - \sum_{j = 1}^{i - 1} a_{ij} x_{j}^{(k + 1)} - \sum_{j = i + 1}^{n} a_{ij} x_{j}^{(k)}\right)
+\end{equation*}
+Konvergiert falls $\rho(\ma{K}_{gs}) < 1$ oder $\ma{A}$ strikt diagonaldominant oder $\ma{A}$ positiv definit \\
+Falls $A$ tridiagonal und positiv definit
+\begin{equation*}
+	\rho(\ma{K}_{gs}) = \rho(\ma{K}_j)^2
+\end{equation*}
+\textbf{Vorkonditionierung:}
+\begin{equation*}
+	\ma P = (\ma D + \ma L)^{-1}\quad\Rightarrow\quad\ma P\ma A \vec x = \ma P\vec b
+\end{equation*}
+}
+
+\sectionbox{
+\subsection{Successive Over-Relaxation}
+\begin{equation*}
+	\ma{K}_{SOR} = (\ma{D} + \omega \ma{L})^{-1} (\ma{D}(1 - \omega) - \omega \ma{U})
+\end{equation*}
+\emph{Matrixdarstellung:}
+\begin{equation*}
+	\vec{x}^{(k + 1)} = \ma{K}_{SOR} \vec{x}^{(k)} + (\ma{D} + \omega \ma{L})^{-1} \omega \vec{b}
+\end{equation*}
+	\emph{Komponentenweise:}\\
+$x_i^{(k+1)} = \omega a_{ii}^{-1} \left( \vec b_i - \sum\limits_{j=1}^{i-1} a_{ij} x_j^{(k+1)} - \sum\limits_{j = i +1}^{n} a_{ij} x_j^{(k)} \right) + (1 - \omega) x_i^{(k)}$\\
+Optimale Konvergenz für
+\begin{equation*}
+	\omega_\text{opt} = \argmin_{\omega} \rho(\ma{K}_{SOR})
+\end{equation*}
+Falls $A$ positiv definit und tridiagonal $\Rightarrow \rho(\ma{K}_{gs}) = \rho(\ma{K}_j)^2 < 1$:
+\begin{equation*}
+	\omega_\text{opt} = \frac{2}{1 + \sqrt{1 - \rho(\ma{K}_j)^2}}
+\end{equation*}
+}
+
+\sectionbox{
+\subsection{Gradienten-Verfahren}
+\textbf{Voraussetzungen:} $\ma A = \ma A^T$ und $\ma A$ positiv definit
+\begin{equation*}
+	\Phi(\vec{x}) = \frac{1}{2} \vec{x}^T \ma{A} \vec{x} - \vec{x}^T \vec{b}
+\end{equation*}
+\begin{equation*}
+	\vec{r}^{(k)} = \vec{b} - \ma{A} \vec{x}^{(k)}
+\end{equation*}
+\begin{equation*}
+	\alpha^{(k)} = \frac{\vec{r}^{(k)T} \vec{r}^{(k)}}{\vec{r}^{(k)T} \ma{A} \vec{r}^{(k)}}
+\end{equation*}
+\emph{Matrixdarstellung:}
+\begin{equation*}
+	\vec{x}^{(k + 1)} = \vec{x}^{(k)} + \alpha^{(k)} \vec{r}^{(k)}
+\end{equation*}
+}
+
+\section{Matrix Zerlegung}
+\sectionbox{
+	\subsection{LR-Zerlegung von Matrizen (\textbf{L}ower and \textbf{U}pper)}
+Geeignetes Lösungsverfahren für $\ma A \vec x = \vec b$, falls $n < 500$\\
+$\ma A = \ma L \cdot \ma R$ \quad mit $\ma R$ obere Dreiecksmatrix ($\rang \ma A = \rang\ma R$)\\
+\cookbox{Gaußverfahren durch Matrixmultiplikaiton}{
+	\item Zerlegen des Problems $\ma A \vec x = \vec b$ in das Problem $\ma L (\ma R \vec x) = \vec b$  mit $\ma A = \ma L \ma R$ bzw. $\ma L \vec y = \ma P \vec b$ (mit Pivotisierung)
+	\item Zerlegungsmatrix (für $2 \times 2$): \\ $\ma A = \mat{a & b \\ c & d} \ra \mat{a & b \\ \frac{c}{a} & d - \frac{c}{a} b} = \ma A^*$ mit den Eliminationsfaktoren $l_{ik} = \frac{a_{ik}}{a_{kk}} \overset{z.B.}{=} \frac{c}{a}$
+	\item Für jede Spalte der unteren Dreiecksmatrix wiederholen.\\
+		 Für eine $3 \times 3$ Matrix bräuchte man 2 Durchläufe, da 3 Spalten Elimationsfaktoren bestimmt werden müssen.
+	\item $\ma R = \texttt{triu}(\ma A^*)$\\
+	 (obere Dreiecksmatrix von $\ma A^*$, inkl. Diagonalelemente)
+	\item $\ma L = \texttt{tril}(\ma A^*,-1)+\ma 1$\\
+	 (untere Dreiecksmatrix mit $1$en auf der Diagonale.
+	\item \textbf{Vorwärtseinsetzen:} $\ma L \vec y = \vec b$ bzw. $\ma L \vec y = \ma P \vec b$ (mit Pivotisierung)\quad (Löse nach $\vec y$)
+	\item \textbf{Rückwärtseinsetzen:} $\ma R \vec x = \vec y$ \quad (Löse nach $\vec x$)
+
+	} \\
+
+	\subsubsection{Pivotisierung (Spaltenpivotsuche)}
+	Permutationsmatrix $\ma P^\top = \ma P^{-1}$ vertauscht Zeilen, damit LR Zerlegung bei 0 Einträgen möglich ist.
+	Tausche so, dass man durch die betragsmäßig größte Zahl dividiert (Pivotelement) %Verhindert Auslöschung
+
+	\subsubsection{Rechenaufwand (FLOPS)}
+	\tablebox{
+		\begin{tabularx}{\columnwidth}{lX}
+			\ctrule
+			LU-Zerlegung & $\frac{2}{3}n^3 - \frac{1}{2}n^2 - \frac{1}{6}n$\\
+			Vorwärtseinsetzen & $n^2 - n$\\
+			Rückwärtseinsetzen & $n^2$\\
+			\cbrule
+		\end{tabularx}
+	}
+}
+
+\sectionbox{
+		\subsection{QR-Zerlegung}
+	$\ma A = \ma Q \ma R$ mit $\ma Q^{-1} = \ma Q^\top$\\
+	Verfahren: Housholder (numerisch stabil) , Gram-Schmidt, Givens Rotation.\\
+	$\ma A \xrightarrow{EZF} \ma H\ma A \xrightarrow{EZF} \tilde{\ma H} \ma H \ma A = \ma R \Ra \ma A = \ma H^\top \tilde{\ma H}^\top \ma R$\\
+	Aufgabe: Finde Vektor $\vec v$ der Senkrecht auf $\ma H$ steht.\\
+
+	\subsubsection*{Lösen von LGSen mit der $Q R$ Zerlegung}
+	Bestimme $\vec x$ durch Rückwärtssubsitution aus $\ma R \vec x = \ma Q^\top \vec b$
+}
+
+\sectionbox{
+	\cookbox{QR-Zerlegung mit Householder-Transformation für $\ma A \in \mathbb R^{m\times n }$}{
+		\item Setze $\vec a = \vec s_1$ (erste Spalte) und $\vec v = \vec a + \sgn ( a_1) \norm{\vec a} \vec e_1$
+		\item Konstruiere die \emph{Householder}-Transformationsmatrix mit \\
+		$\ma H_v = \ma E_m - \frac{2}{\vec v^\top \vec v} \vec v \vec v^\top$
+		\item Erhalte die Matrix $\ma H_v \ma A$ die in der ersten Spalte bis auf das Element $a_{11}$ nur Nullen enthält
+		\item Setze $\ma Q_1 = \ma H_v$
+		\item Wende den gleichen Algorithmus auf die Untermatrix $\ma A^*$ ($\ma H_v \ma A$ ohne erste Zeile und Spalte) an.
+		\item Setze anschließend $\ma Q_2 = \ma H_v$ und fülle mit erweitere mit $E_m$ (d.h. erste Zeile und Spalte die von $E_m$)
+		\item Nach $p = \min \eset{m - 1, n}$ Schritten: $\ma H_v \ma A^*$ ist obere Dreiecksmatrix
+		\item Somit ist mit $\ma Q^\top = \ma Q_p \cdots \ma Q_1$ ist $\ma Q^\top \ma A = \ma R$ und $\ma A = \ma Q \ma R$
+	}
+}
+
+\sectionbox{
+	\cookbox{QR-Zerlegung mit Givens-Rotation für $\ma A \in \mathbb R^{m\times n }$}{
+		\item Setze $\ma R = \ma A$
+		\item Setze $\ma G_\text{gesamt} = \ma E_m$
+		\item Wiederhole folgende Schritte für alle Elemente in $\ma R$, welche $0$ werden sollen (in Reihe $x$ und Spalte $y$), spaltenweise von links nach rechts und in jeder Spalte von unten nach oben
+		\item Setze $a$ auf Wert des aktuellen Hauptdiagonalelements
+		\item Setze $b$ auf Wert, welcher durch $0$ ersetzt werden soll
+		\item $p = \sqrt{a^2 + b^2}$
+		\item $c = \frac{a}{p}$
+		\item $s = \frac{b}{p}$
+		\item Setze $\ma G = (g_{ij}) =
+						\begin{cases}
+							c & i = x, j = x \\
+							c & i = y, j = y \\
+							s & i = y, j = x \\
+							-s & i = x, j = y \\
+							\text{Einheitsmatrix} & \text{sonst}
+						\end{cases}$
+		\item Setze $\ma G_\text{gesamt} = \ma G \ma G_\text{gesamt}$
+		\item Setze $\ma R = \ma G \ma R$
+		\item Fahre, falls nötig, mit nächstem Element in $\ma R$ fort
+		\item Setze $\ma Q = \ma G_\text{gesamt}^T$
+	}
+}
+
+\sectionbox{
+\subsection{Dünnbesetzte Matrizen}
+\textbf{Ziel:} effizienteres Speichern von Matrizen mit vielen 0 Einträgen.
+\begin{equation*}
+\ma A = \begin{bmatrix}
+a & 0 & 0 & 0\\
+0 & b & c & 0\\
+0 & 0 & 0 & d\\
+e & 0 & f & 0
+\end{bmatrix}
+\end{equation*}
+
+\tablebox{
+\begin{tabularx}{\columnwidth}{@{}lCCC}
+\ctrule
+				& \textbf{COO} 		& \textbf{CRS} 		& \textbf{CCS}		\\
+\cmrule
+\texttt{row} 	& $\{1,2,2,3,4,4\}$ & 					& $\{1,4,2,2,4,3\}$	\\
+\texttt{rowptr} & 					& $\{1,2,4,5,7\}$ & 					\\
+\texttt{col} 	& $\{1,2,3,4,1,3\}$ & $\{1,2,3,4,1,3\}$ & 					\\
+\texttt{colptr}	& 					& 					& $\{1,3,5,6,7\}$	\\
+\texttt{val} 	& $\{a,b,c,d,e,f\}$ & $\{a,b,c,d,e,f\}$ & $\{a,b,c,d,e,f\}$	\\
+\cbrule
+\end{tabularx}
+}
+\begin{tabularx}{\columnwidth}{@{}lX}
+\textbf{COO} & Zeilen und Spaltenindex von \texttt{val}\\
+\textbf{CRS} & \texttt{rowptr}(i) zeigt auf j-tes Element von \texttt{col}\\
+\textbf{CCS} & \texttt{colptr}(i) zeigt auf j-tes Element von \texttt{row}\\
+\end{tabularx}
+}
+
+\section{Numerische Differentiation}
+\sectionbox{
+\subsection{Vorwärtsdifferenz}
+\begin{equation*}
+	f'(x_0) \approx \tilde{f}_\text{Vor}'(x_0) = \frac{f(x_0 + h) - f(x_0)}{h}
+\end{equation*}
+\begin{equation*}
+	f'(x_0) - \tilde{f}_\text{Vor}'(x_0) \in \mathcal{O}(h)
+\end{equation*}
+
+\subsection{Rückwärtsdifferenz}
+\begin{equation*}
+	f'(x_0) \approx \tilde{f}_\text{Rück}'(x_0) = \frac{f(x_0) - f(x_0 - h)}{h}
+\end{equation*}
+\begin{equation*}
+	f'(x_0) - \tilde{f}_\text{Rück}'(x_0) \in \mathcal{O}(h)
+\end{equation*}
+
+\subsection{Zentrale Differenz}
+\begin{equation*}
+	f'(x_0) \approx \tilde{f}_\text{Zentral}'(x_0) = \frac{f(x_0 + h) - f(x_0 - h)}{2h}
+\end{equation*}
+\begin{equation*}
+	f'(x_0) - \tilde{f}_\text{Zentral}'(x_0) \in \mathcal{O}(h^2)
+\end{equation*}
+}
+
+\section{Numerische Integration}
+\sectionbox{
+\subsection{Polynom-Ansätze}
+\begin{equation*}
+	\int_a^b f(x) \diff x \approx \int_a^b P(x) \diff x
+\end{equation*}
+
+\subsubsection{Lagrange}
+\begin{equation*}
+	P(x) = \sum_{k = 0}^n L_{n, k}(x)\cdot f(x_k)
+\end{equation*}
+\begin{equation*}
+	L_{n, k}(x) = \prod_{i = 0, i \ne k}^n \frac{x - x_i}{x_k - x_i}
+\end{equation*}
+
+\subsubsection{Differenzen}
+\begin{equation*}
+	f[x_i, \dots, x_j] = \frac{f[x_{i + 1}, \dots, x_j] - f[x_i, \dots x_{j - 1}]}{x_j - x_i}
+\end{equation*}
+\begin{equation*}
+	P(x) = f[x_0] + \sum_{k = 1}^n f[x_0, \dots, x_k] (x - x_0) \dots (x - x_{k - 1})
+\end{equation*}
+}
+
+\sectionbox{
+\subsection{Newton-Cotes}
+\begin{equation*}
+	\int_a^b f(x) \diff x \approx \sum_{i = 0}^n g_i f(x_i)
+\end{equation*}
+\begin{equation*}
+	h = \frac{b - a}{n}
+\end{equation*}
+
+\subsubsection{Trapez}
+falls $n = 1$:
+\begin{equation*}
+	\int_a^b f(x) \diff x \approx (b - a) \frac{f(a) + f(b)}{2}
+\end{equation*}
+\textbf{Allgemein:}
+\begin{equation*}
+	\int_a^b f(x) \diff x \approx h \left( \frac{f(a) + f(b)}{2} + \sum_{k = 1}^{n - 1} f(a + k \cdot h) \right)
+\end{equation*}
+}
+
+\sectionbox{
+\subsubsection{Simpson $\frac{1}{3}$ (Fassregel)}
+falls $n = 2$:
+\begin{equation*}
+	\int_a^b f(x) \diff x \approx \frac{b - a}{6} (f(a) + 4 f(a + h) + f(b))
+\end{equation*}
+\textbf{Allgemein} (zusammengesetzte Simpsonregel):
+\begin{equation*}
+	\int_a^b f(x) \diff x \approx \frac{h}{3} \left( f(a) + f(b) + \sum_{k = 1}^{n - 1} a_k f(a + k \cdot h) \right)
+\end{equation*}
+\begin{equation*}
+	a_k = 3 + (-1)^{k + 1}
+\end{equation*}
+
+\subsubsection{Simpson $\frac{3}{8}$}
+falls $n = 3$:
+\begin{equation*}
+	\int_a^b f(x) \diff x \approx \frac{3h}{8} (f(a) + 3 f(a + h) + 3 f(a + 2h) + f(b))
+\end{equation*}
+}
+
+\sectionbox{
+\subsection{Kubische Splines}
+\begin{equation*}
+	S_j(x) = a_j + b_j (x-x_j) + c_j (x-x_j)^2 + d_j (x-x_j)^3
+\end{equation*}
+Für $j=0,1,\ldots,n-1$:
+\begin{equation*}
+	S_j(x_j) = f(x_j) \wedge S_j(x_{j+1}) = f(x_{j+1})
+\end{equation*}
+Für $j=0,1,\ldots,n-2$:
+\begin{align*}
+	S_j(x_{j+1}) &= S_{j+1}(x_{j+1})\\
+	S_{j+1}'(x_{j+1}) &= S_j'(x_{j+1})\\
+	S_{j+1}''(x_{j+1}) &= S_j''(x_{j+1})
+\end{align*}
+Freier bzw. natürlicher Rand:
+\begin{equation*}
+	S''(x_0) = S''(x_n) = 0
+\end{equation*}
+Eingespannter Rand:
+\begin{equation*}
+	S'(x_0) = f'(x_0) \wedge S'(x_n) = f'(x_n)
+\end{equation*}
+}
+\sectionbox{
+\cooknumbox{Parameterbestimmung}{
+\item $a_j = f(x_j)$ und $h_j = x_{j+1} - x_j$
+\item Löse LGS für $\vec c$: $\ma A \vec c = \vec l$\\
+\scalebox{.9}{$\ma A = \begin{bmatrix}
+1 & 0 & 0 & \dots & 0\\
+h_0 & 2(h_0+h_1) & h_1 & \ddots & \vdots\\
+\ddots & \ddots & \ddots & \ddots & \vdots\\
+\vdots & \ddots & h_{n-2} & 2(h_{n-2}-h_{n-1}) & h_{n-1}\\
+0 & \dots & 0 & 0 & 1
+\end{bmatrix}$}\\
+$\vec l = \begin{bmatrix}
+0 \\ \frac{3}{h_1}(a_2 - a_1) - \frac{3}{h_0}(a_1 - a_0) \\ \vdots \\ \frac{3}{h_{n-1}}(a_{n} - a_{n-1}) - \frac{3}{h_{n-2}}(a_{n-1} - a_{n-2}) \\ 0
+\end{bmatrix}$
+\item $b_j = \frac{1}{h_j}(a_{j+1}- a_j)-\frac{h_j}{3}(2c_j+c_{j+1})$
+\item $d_j = \frac{1}{3h_j}(c_{j+1}-c_j)$
+}
+}
+
+\section{Least Squares}
+\sectionbox{
+\subsection{Anwendung in der linearen Ausgleichsrechnung}
+(Minimierung d. Restes)\\
+Problem: $\ma A^\top \ma A \vec x = \ma A^\top \vec b$ mit $\ma A \in \mathbb R^{m \times n }$ und $\vec b \in \mathbb R^{m}$ \\
+\cookbox{Lösen der Normalengleichung}{
+	\item Bestimme eine reduzierte QR-Zerlegung \\ $\ma A = \tilde{\ma Q}  \tilde{\ma R}$ mit $\tilde{\ma Q} \in \mathbb R^{m \times n}, \tilde{\ma R} \in \mathbb R^{n \times n}$
+	\item Löse $\tilde{\ma R } \vec x =\tilde{\ma Q}^\top \vec b$
+}
+$\norm{\vec b - \ma A \vec x}^2 = \norm{\ma Q^\top (\vec b - \ma A \vec x)}^2 = \norm{\tilde{\vec b} - \tilde{\ma R} \vec x}^2 + \norm{\vec c}^2 \ge \norm{\vec c^2}$
+}
+
+\sectionbox{
+\subsection{Linear Least Squares}
+\begin{equation*}
+	y = a x + b
+\end{equation*}
+\begin{equation*}
+	\argmin_{a, b} E(a, b) = \sum_{i = 1}^n \left( y_i - (a x_i + b) \right)^2
+\end{equation*}
+
+\subsection{Polynomial Least Squares}
+\begin{equation*}
+	P(x) = a_n x^n + \ldots + a_1 x + a_0
+\end{equation*}
+\begin{equation*}
+	\argmin_{a_0, \ldots, a_n} E_n(a_0, \ldots, a_n) = \sum_{i = 1}^n \left( y_i - P(x_i) \right)^2
+\end{equation*}
+}
+
+\section{Numerische Lösung von Differentialgleichungen}
+\sectionbox{
+\textbf{Ausgangsproblem:}
+\begin{equation*}
+	\dot{x}(t) = f(x(t))
+\end{equation*}
+\begin{equation*}
+	\hat{x}(\nu) = x(t_0 + \Delta t \nu)
+\end{equation*}
+\begin{equation*}
+	\hat{f}(\nu) = f(t_0 + \Delta t \nu)
+\end{equation*}
+
+\subsection{Expliziter Euler}
+\begin{equation*}
+	\hat{x}(\nu + 1) = \hat{x}(\nu) + \Delta t \hat{f}(\nu)
+\end{equation*}
+
+\subsection{Impliziter Euler}
+\begin{equation*}
+	\hat{x}(\nu + 1) = \hat{x}(\nu) + \Delta t \hat{f}(\nu + 1)
+\end{equation*}
+
+\subsection{Trapez}
+\begin{equation*}
+	\hat{x}(\nu + 1) = \hat{x}(\nu) + \frac{\Delta t}{2} (\hat{f}(\nu) + \hat{f}(\nu + 1))
+\end{equation*}
+}
+
+\sectionbox{
+\subsection{Gear}
+\begin{equation*}
+	\hat{x}(\nu + 2) = \frac{4}{3} \hat{x}(\nu + 1) - \frac{1}{3} \hat{x}(\nu) + \frac{2}{3} \Delta t \hat{f}(\nu + 2)
+\end{equation*}
+
+\subsection{Heun}
+\begin{equation*}
+	\hat{x}^{[P]}(\nu + 1) = \hat{x}(\nu) + \Delta t \hat{f}(\nu, \hat{x}(\nu))
+\end{equation*}
+\begin{equation*}
+	\hat{x}(\nu + 1) = \hat{x}(\nu) + \frac{\Delta t}{2} \left( \hat{f}(\nu, \hat{x}(\nu)) + \hat{f}(\nu + 1, \hat{x}^{[P]}(\nu + 1)) \right)
+\end{equation*}
+
+\subsection{k-Schritt-Adams-Bashforth}
+\begin{equation*}
+	\hat x(\nu + k) = \hat x(\nu + k - 1) + \Delta t\sum_{i=0}^{k-1}b_{k,i}\hat f(\nu + i)
+\end{equation*}
+\begin{tabularx}{\columnwidth}{C|CCCCC}
+$b_{i,k}$ & $i=0$ & $i=1$ & $i=2$ & $i=3$ \\ \hline
+$k=1$ & $1$ & & & \\
+$k=2$ & $-\frac{1}{2}$ & $\frac{3}{2}$ & & \\
+$k=3$ & $\frac{5}{12}$ & $-\frac{16}{12}$ & $\frac{23}{12}$ & \\
+$k=4$ & $-\frac{9}{24}$ & $\frac{37}{24}$ & $-\frac{59}{24}$ & $\frac{55}{24}$
+\end{tabularx}
+}
+
+\section{Matlab Sample Code}
+\begin{lstlisting}
+function x = gaussVerfahren(A, b)
+    [L, U, P] = LUZerlegung(A);
+    [y] = vorwaertsSubstitution(L, P, b);
+    [x] = rueckwaertsSubstitution(U, y);
+end
+\end{lstlisting}
+
+\begin{lstlisting}
+function [L, U, P] = LUZerlegung(A)
+    n = size(A, 1);
+    L = zeros(n, n);
+    P = eye(n);
+
+    for i = 1:n-1
+        [pivot, pivotIndex] = max(abs(A(i:n, i)));
+        pivotIndex = pivotIndex + (i - 1);
+        pivot = A(pivotIndex, i);
+        Psub = eye(n);
+        Psub(:, [i, pivotIndex]) = Psub(:, [pivotIndex, i]);
+        A([i, pivotIndex], :) = A([pivotIndex, i], :);
+        L([i, pivotIndex], :) = L([pivotIndex, i], :);
+        P = Psub*P;
+        pivotRow = A(i, i+1:n);
+        for j = i+1:n
+            factor = A(j, i)/pivot;
+            L(j, i) = factor;
+            currentRow = A(j, i+1:n);
+            A(j, i+1:n) = currentRow - factor*pivotRow;
+            A(j, i) = 0;
+        end
+    end
+
+    U = A;
+    L = L + eye(n);
+end
+\end{lstlisting}
+
+\begin{lstlisting}
+function [y] = vorwaertsSubstitution(L, P, b)
+    n = size(L, 1);
+    y = zeros(n, 1);
+    b = P*b;
+    y(1) = b(1)/L(1, 1);
+
+    for i = 2:n
+        rowSum = L(i, 1:i-1)*y(1:i-1);
+        y(i) = (b(i) - rowSum)/L(i, i);
+    end
+end
+\end{lstlisting}
+
+\begin{lstlisting}
+function [x] = rueckwaertsSubstitution(U, y)
+    n = size(U, 1);
+    x = zeros(n, 1);
+    x(n) = y(n)/U(n, n);
+
+    for i = n-1:-1:1
+        rowSum = U(i, i+1:n)*x(i+1:n);
+        x(i) = (y(i) - rowSum)/U(i, i);
+    end
+end
+\end{lstlisting}
+
+\begin{lstlisting}
+function [ x_k,r_k,alpha_k ] = conjugateGradientIteration( A,b,x0,N )
+    x_k = zeros(length(x0),N+1);
+    r_k = zeros(length(x0),N+1);
+    p_k = zeros(length(x0),N+1);
+
+    alpha_k = zeros(1,N);
+    beta_k = zeros(1,N);
+
+    x_k(:,1) = x0;
+    r_k(:,1) = b-A*x0;
+    p_k(:,1) = r_k(:,1);
+
+    for i = 1:N
+        Ap = A*p_k(:,i);
+        alpha_k(i) = (p_k(:,i)'*r_k(:,i))./(p_k(:,i)'*Ap);
+        x_k(:,i+1) = x_k(:,i) + alpha_k(i).*p_k(:,i);
+        r_k(:,i+1) = r_k(:,i) -alpha_k(i).*Ap;
+        beta_k(i) = (Ap'*r_k(:,i+1))./(Ap'*p_k(:,i));
+        p_k(:,i+1) = r_k(:,i+1) - beta_k(i).*p_k(:,i);
+    end
+end
+\end{lstlisting}
+
+\begin{lstlisting}
+function [x_k,r_k,alpha_k] = gradientIteration(A,b,x0,N)
+    x_k = zeros(length(x0),N+1);
+    r_k = zeros(length(x0),N);
+    alpha_k = zeros(1,N);
+
+    x_k(:,1) = x0;
+    for i = 1:N
+        r_k(:,i) = b - A*x_k(:,i);
+        alpha_k(i) = (r_k(:,i)'*r_k(:,i))./(r_k(:,i)'*A*r_k(:,i));
+        x_k(:,i+1) = x_k(:,i) + alpha_k(i).*r_k(:,i);
+    end
+end
+\end{lstlisting}
+
+\begin{lstlisting}
+function [Q, R] = householder(A)
+    n = size(A, 1);
+    identity = eye(n);
+    Q = eye(n);
+
+    for i=1:(n-1)
+        a = zeros(n, 1);
+        a(i:end) = A(i:end, i);
+        v = a + sign(a(i))*norm(a)*identity(:, i);
+        Qpartial = identity - 2/(v'*v)*(v*v');
+        Q = Qpartial*Q;
+        A = Qpartial*A;
+    end
+
+    R = A;
+    Q = Q';
+end
+\end{lstlisting}
+
+\begin{lstlisting}
+function [Q, R] = givensRotation(A)
+    n = size(A, 1);
+    Q = eye(n);
+    R = A;
+
+    for i = 1:(n-1)
+        for j = i+1:n;
+            G = createGivensRotation(R, j, i);
+            Q = G*Q;
+            R = G*R;
+        end
+    end
+
+    Q = Q';
+end
+\end{lstlisting}
+
+\begin{lstlisting}
+function [G] = createGivensRotation(A, row, col)
+    a1 = A(col, col);
+    a2 = A(row, col);
+    p = sqrt(a1*a1 + a2*a2);
+    c = a1/p;
+    s = a2/p;
+    G = eye(size(A, 1));
+    G(row, row) = c;
+    G(col, col) = c;
+    G(row, col) = (-1)*s;
+    G(col, row) = s;
+end
+\end{lstlisting}
+
+\begin{lstlisting}
+function [a,b,c,d] = splineParameter(xi,f)
+	n = max(size(xi));% Anzahl der Stuetzstellen
+	a = f(xi);
+    h = zeros(n-1,1);% Schrittweite
+
+    for i=1:n-1
+       h(i) = xi(i+1)-xi(i);
+    end
+    A = sparse(zeros(n,n));% Matrix fuer LGS
+    bs = zeros(n,1);% rechte Seite fuer LGS
+    for i=2:n-1
+       A(i,i) = 2*(h(i)+h(i-1));
+       A(i,i-1) = h(i-1);
+       A(i,i+1) = h(i);
+       bs(i) = (3/h(i))*(a(i+1)-a(i)) - (3/h(i-1))*(a(i)-a(i-1));
+    end
+    A(1,1) = 1;
+    A(n,n) = 1;
+    c = A\bs;% Loesung des LGS
+    b = zeros(n,1);% Parameter b fuer Splines
+    d = zeros(n,1);% Parameter d fuer Splines
+    for i=1:n-1
+        b(i) = (1/h(i))*(a(i+1)-a(i))-(h(i)/3)*(2*c(i)+c(i+1));
+        d(i) = (1/(3*h(i)))*(c(i+1)-c(i));
+    end
+end
+\end{lstlisting}
+
+\section{Blabla Fragen}
+\sectionbox {
+
+\begin{enumerate}
+	\item \textbf{Nennen Sie einen Vorteil der Dividierten Differenzen gegenüber der Lagrange-Interpolation.}
+	\begin{itemize}
+		\item geringerer Aufwand
+		\item keine komplette Neuberechnung bei neuer Stützstelle
+	\end{itemize}
+	\item \textbf{Nennen Sie einen Nachteil der Polynominterpolation gegenüber der Spline-Interpolation.}
+	\begin{itemize}
+		\item Oszillation am Intervallrand $\Rightarrow$ großer Fehler am Rand
+	\end{itemize}
+
+	\item \textbf{Nennen Sie zwei Vorteile des Adams-Bashfort-3-Schrittverfahrens gegenüber der Trapez- Methode zum Lösen nichtlinearer Differentialgleichungen.}
+	\begin{itemize}
+		\item höhere Genauigkeit (lokaler Fehler kleiner bei gleicher Schrittweite)
+		\item explizites Verfahren (geringerer Rechenaufwand)
+	\end{itemize}
+
+	\item \textbf{Nennen Sie zwei Vorteile des Gauß-Verfahrens gegenüber dem Jacobi-Verfahren.}
+	\begin{itemize}
+		\item für alle nicht-singulären Matrizen lösbar
+		\item geringerer Aufwand, wenn das gleiche Gleichungssystem mit verschiedenen rechten Seiten gelöst werden soll.
+	\end{itemize}
+
+	\item \textbf{Nennen Sie drei numerische Integrationsverfahren, die die gleiche (lokale) Fehlerordnung wie das Trapezverfahren besitzen.}
+	\begin{itemize}
+		\item Gear
+		\item Taylor-Verfahren zweiter Ordnung
+		\item Zweischritt Adams Bashfort
+	\end{itemize}
+
+	\item \textbf{Nennen Sie einen Vorteil des Jacobi-Verfahrens gegenüber dem Gauß-Seidel-Verfahren.}
+	\begin{itemize}
+		\item leicht parallelisierbar
+	\end{itemize}
+
+	\item \textbf{Nennen Sie einen Nachteil des Jacobi-Verfahrens gegenüber dem Gauß-Seidel-Verfahren.}
+	\begin{itemize}
+		\item langsamere Konvergenz
+	\end{itemize}
+
+	\item \textbf{Geben Sie an, welche numerischen Probleme bei Anwendung der Sekantenmethode zur Bestimmung der Nullstelle von $F(x)$ in der Nähe der Nullstelle $x_0$ auftreten können.}
+	\begin{itemize}
+		\item In der Nähe der Nullstelle ist $F(x^{(k)}) \approx 0$, weshalb in der Iterationsvorschrift näherungsweise der Term $\frac{0}{0}$ auftreten kann. Dementsprechend können Auslöschungsfehler auftreten.
+	\end{itemize}
+
+%	\item \textbf{Geben Sie die Determinante und Konditionszahl einer Givens-Rotationsmatrix G(l, k, θ) für eine beliebige Matrix A^Rm×m an. Begründen Sie.}
+%	\item \textbf{Das Integral einer beliebig oft differenzierbaren Funktion wird mit der zusammengesetzten Trapezregel approximiert. Um welchen Faktor ändert sich der Approximationsfehler, wenn bei der zusammengesetzten Trapezregel die Anzahl der Teilintervalle verdoppelt wird?}
+%	\item \textbf{}
+\end{enumerate}
+
+}
 
 \end{multicols*}
 \end{document}
