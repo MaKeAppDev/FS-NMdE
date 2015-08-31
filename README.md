@@ -1,7 +1,8 @@
-# Numerische Methoden der Elektrotechnik
+# Numerische Methoden der Elektrotechnik [![wercker status](https://app.wercker.com/status/f482e051deca271f9ec2119eb1b43564/s "wercker status")](https://app.wercker.com/project/bykey/f482e051deca271f9ec2119eb1b43564)
 ## Formelsammlung für Latex4ei
 ### Links
 
+Fresh Development Version: [TUM-Projekte](https://makeappdev.github.io/TUM-Projekte/)  
 Public Version: [latex4ei.de](http://latex4ei.de)  
 
 ## Written by
