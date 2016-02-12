@@ -9,14 +9,12 @@
 
 
 % Dokumentklasse (Schriftgröße 6, DIN A4, Artikel)
-\documentclass[fs, footer]{latex4ei}
+\documentclass[german]{latex4ei/latex4ei_fs}
 
 \usepackage[european]{circuitikz}
 \usepackage{tabularx}
 \usepackage{multirow}
 \usetikzlibrary{arrows, calc, intersections}
-\usepackage{hyperref}
-\usepackage{listings}
 \usepackage{calc}
 
 % Für code
@@ -24,29 +22,29 @@
 \definecolor{MATLABBACKGROUND}{HTML}{FCFCDC}
 \lstset{ %
 language=Matlab,						% choose the language of the code
-basicstyle=\ttfamily,					% the size of the fonts that are used for the code
-emphstyle=\color{yellow}\ttfalily,
-keywordstyle=\color{blue}\ttfamily,
-stringstyle=\color{magenta}\ttfamily,
-commentstyle=\color{COMMENTGREEN}\ttfamily,
-xleftmargin=10.3pt,						% distance to margin left
-xrightmargin=-3pt,						% distance to margin right
-%linewidth=\widthof{\sectionbox{}}		% this would be better instead of left and right margin
-aboveskip=0.6\baselineskip,
-belowskip=0\baselineskip,
+%basicstyle=\ttfamily,					% the size of the fonts that are used for the code
+%emphstyle=\color{yellow}\ttfalily,
+%keywordstyle=\color{blue}\ttfamily,
+%stringstyle=\color{magenta}\ttfamily,
+%commentstyle=\color{COMMENTGREEN}\ttfamily,
+%xleftmargin=10.3pt,						% distance to margin left
+%xrightmargin=-3pt,						% distance to margin right
+%linewidth=\widthof{\begin{sectionbox}}}		% this would be better instead of left and right margin
+%aboveskip=0.6\baselineskip,
+%belowskip=0\baselineskip,
 numbers=left,                   		% where to put the line-numbers
-framexleftmargin=1.5em,					% distance to xleftmargin
-numberstyle=\ttfamily\footnotesize,		% the size of the fonts that are used for the line-numbers
-stepnumber=1,							% the step between two line-numbers. If it is 1 each line will be numbered
-numbersep=5pt,							% how far the line-numbers are from the code
-backgroundcolor=\color{MATLABBACKGROUND},	% choose the background color. You must add \usepackage{color}
-showspaces=false,						% show spaces adding particular underscores
-showstringspaces=false,					% underline spaces within strings
-showtabs=false,							% show tabs within strings adding particular underscores
-frame=single,							% adds a frame around the code (Box) (Für top und bottom rule set option to "lines")
-rulecolor=\color{gray},					% color of framebox rule
-tabsize=4,								% sets default tabsize to 2 spaces
-captionpos=b,							% sets the caption-position to bottom
+%framexleftmargin=1.5em,					% distance to xleftmargin
+%numberstyle=\ttfamily\footnotesize,		% the size of the fonts that are used for the line-numbers
+%stepnumber=1,							% the step between two line-numbers. If it is 1 each line will be numbered
+%numbersep=5pt,							% how far the line-numbers are from the code
+%backgroundcolor=\color{MATLABBACKGROUND},	% choose the background color. You must add \usepackage{color}
+%showspaces=false,						% show spaces adding particular underscores
+%showstringspaces=false,					% underline spaces within strings
+%showtabs=false,							% show tabs within strings adding particular underscores
+%frame=single,							% adds a frame around the code (Box) (Für top und bottom rule set option to "lines")
+%rulecolor=\color{gray},					% color of framebox rule
+%tabsize=4,								% sets default tabsize to 2 spaces
+%captionpos=b,							% sets the caption-position to bottom
 breaklines=true,						% sets automatic line breaking
 breakatwhitespace=false,				% sets if automatic breaks should only happen at whitespace
 escapeinside={\%*}{*)}					% if you want to add a comment within your code
@@ -60,7 +58,8 @@ escapeinside={\%*}{*)}					% if you want to add a comment within your code
 \sisetup{locale=DE}
 
 % Eigener Inhalt für Center-Teil des Footers
-\fancyfoot[C]{von Markus Hofbauer, Kevin Meyer und Benedikt Schmidt - Kontakt:  \href{mailto:latex@kevin-meyer.de}{\textit{latex@kevin-meyer.de}}}
+\title{Numerische Methoden der Elektrotechnik}
+\author{von Markus Hofbauer, Kevin Meyer und Benedikt Schmidt - Kontakt:  \href{mailto:latex@kevin-meyer.de}{\textit{latex@kevin-meyer.de}}}
 
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator{\cond}{cond}
@@ -70,28 +69,24 @@ escapeinside={\%*}{*)}					% if you want to add a comment within your code
 % ======================================================================
 \begin{document}
 
-\IfFileExists{git.id}{\input{git.id}}{}
-\ifdefined\GitRevision\fancyfoot[R]{Stand: \GitNiceDate \ (git \GitRevision) \qquad \thepage}\fi
+%\IfFileExists{git.id}{\input{git.id}}{}
+%\ifdefined\GitRevision\fancyfoot[R]{Stand: \GitNiceDate \ (git \GitRevision) \qquad \thepage}\fi
 
 % Aufteilung in Spalten
-\begin{multicols*}{4}
-\fstitle{Numerische \mbox{Methoden der} \mbox{Elektrotechnik}}
+
+\maketitle
 
 \section{Grundlagen}
-\sectionbox{
-\tablebox{
-	\begin{tabular*}{\columnwidth}{@{\extracolsep\fill}lp{5cm}@{}}
-	\ctrule
+\begin{sectionbox}
+\begin{tablebox}{@{\extracolsep\fill}lp{5cm}@{}}
 	Numerik & liefert eine zahlenmäßige Lösung eines Problems mit einem Algorithmus.\\
 	Kondition & Ein Maß wie stark sich Eingabefehler auf die Ausgabe auswirken. $\kappa = \frac{\norm{\delta f}}{\norm{\delta x}} \ra |f'(x)|$\\
 	$f(x)$ & Mathematisches Problem $f$ mit exakter Eingabe $x$\\
 	$\tilde f(\tilde x)$ & Numerischer Algorithmus $\tilde f$ mit gerundeter Eingabe $\tilde x$\\
-	\cbrule
-	\end{tabular*}
-}
-}
+\end{tablebox}
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 \subsection{Spektralradius}
 	\textbf{Spektralradius $\rho(\ma A)$ einer Matrix $\ma A$:} Betragsmäßig größter Eigenwert. \\
 	Konvergenzbeweis aller Verfahren: Gershgorinkreise um die Null mit $r \le 1$
@@ -109,15 +104,15 @@ Diagonalelemente sind größer als die restlichen Elemente der selben Zeile:\\
 \begin{equation*}
 \ma{A} \begin{aligned} \text{positiv definit} \\ \text{ positiv semidefinit}\end{aligned} \Leftrightarrow \lambda_i \begin{aligned} > \\ \ge \end{aligned} 0\ \forall i \qquad\text{bzw.}\qquad\vec{x}^T \ma{A} \vec{x} \begin{aligned} > \\ \ge \end{aligned} 0\ \forall \vec{x} \ne 0
 \end{equation*}
-}
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 	\subsection{Kondition}
-	\symbolbox{
+	\begin{symbolbox}
 		\begin{tabularx}{\columnwidth}{lXlX}
 			$y = f(x)$ & Unbekannte & $x$ & Problemdaten
 		\end{tabularx}
-	}
+	\end{symbolbox}
 	$\kappa_{\ir abs}(x) = \abs{f'(x)}$ \qquad\qquad $\kappa_{\ir rel}(x) = \abs{\frac{f'(x)}{\frac{f(x)}{x}}} = \frac{\abs{f'(x)} \cdot \abs{x}}{\abs{f(x)}}$\\
 	Falls $\kappa_{\ir rel} \ll 100$: gute Konditionierung\\
 	\\
@@ -125,6 +120,7 @@ Diagonalelemente sind größer als die restlichen Elemente der selben Zeile:\\
 	\begin{equation*}
 		\cond(\ma{A}) = \norm{\ma{A}^{-1}} \cdot \norm{\ma{A}}
 	\end{equation*}
+	$\cond(\ma{A}) \ra \infty$ schlecht, $\cond(\ma{A}) \ra 1$ gut
 
 	\subsection{Fehler}
 	Absolut: $\norm{\tilde f(x) - f(x)}$ \qquad\qquad Relativ: $\frac{\norm{\tilde f(x) - f(x)}}{\norm{f(x)}}$
@@ -135,9 +131,9 @@ Diagonalelemente sind größer als die restlichen Elemente der selben Zeile:\\
 	\begin{equation*}
 		\vec r = \vec b - \ma A\vec x
 	\end{equation*}
-}
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 \subsection{Parametrisierung einer Geraden}
 \begin{tabularx}{\columnwidth}{CCC}
 \multirow{2}{*}{$g(x) = a x + b$} & $y_1 = g(x_1)$ & $a = \frac{y_1 - y_2}{x_1 - x_2}$\\
@@ -149,9 +145,9 @@ Diagonalelemente sind größer als die restlichen Elemente der selben Zeile:\\
 $a_{11}x_1 + a_{12}x_2 = b_1$ & $x_1 = \frac{a_{22}b_1 - a_{12}b_2}{a_{11}a_{22}-a_{12}a_{21}}$\\
 $a_{21}x_1 + a_{22}x_2 = b_2$ & $x_2 = \frac{-a_{21}b_1 + a_{11}b_2}{a_{11}a_{22}-a_{12}a_{21}}$
 \end{tabularx}
-}
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 \subsection{Matrizen}
 \begin{tabularx}{\columnwidth}{LX}
 $\Sp\ma A = \sum a_{ii} = \sum\lambda_i$  & $\det\ma A = \prod\lambda_i$\\
@@ -170,9 +166,9 @@ $n = \rang\ma A + \dim\ker\ma A$ & $m = \rang\ma A^T + \dim\ker\ma A^T$
 Symmetrisch & $\ma A = \ma A^T$ & Schiefsymmetrisch & $\ma A = -\ma A^T$\\
 Orthogonal & $\ma A\ma A^T = \ma I$ & $\det(\ma A) = \pm 1$ & $\ma A^{-1} = \ma A^T$
 \end{tabularx}
-}
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 \subsubsection{Matrixnorm}
 \begin{tabularx}{\columnwidth}{LX}
 	$\norm{\ma{A}} = 0 \Rightarrow \ma{A} = 0$ & $\norm{\alpha \ma{A}} = \abs{\alpha} \norm{\ma{A}}$\\
@@ -195,10 +191,11 @@ $\det(\ma A\ma B) = \det(\ma A)\det(\ma B) = \det(\ma B)\det(\ma A) = \det(\ma B
 Hat $\ma A$ 2 linear abhäng. Zeilen/Spalten $\Rightarrow |\ma A|=0$ \\
 Entwicklung. n. $i$ter Zeile: $|\ma A|=\sum\limits_{i=1}^n (-1)^{i+j} \cdot a_{ij} \cdot |\ma A_{ij}|$\\
 Inverse $2\times 2$: \quad $\mat{a & b\\ c & d}^{-1} = \frac{1}{ad-bc} \mat{d & -b\\ -c& a}$
-}
+\end{sectionbox}
 
-\sectionbox{
-\subsection{Jacobi-Matrix $\vec f: \mathbb{R}^n \rightarrow \mathbb{R}^m$}
+\begin{sectionbox}
+\subsection{Jacobi-Matrix}
+$\vec f: \mathbb{R}^n \rightarrow \mathbb{R}^m$
 \begin{equation*}
 	\frac{\partial }{\partial \vec x} \vec f(\vec x) = \ma J_f (x) =
 	\begin{bmatrix}
@@ -212,37 +209,34 @@ Inverse $2\times 2$: \quad $\mat{a & b\\ c & d}^{-1} = \frac{1}{ad-bc} \mat{d & 
 		(\nabla f_m)^T
 	\end{bmatrix}
 \end{equation*}
-}
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 \subsection{Wichtige Formeln}
 \setlength{\tabcolsep}{0pt}
-\tablebox{
-\begin{tabular*}{\columnwidth}{@{\extracolsep\fill}ll@{}} \ctrule
+\begin{tablebox}{@{\extracolsep\fill}ll@{}} 
 Dreiecksungleichung: &$\big|\! \abs{x}- \abs{y}\!\big| \le \abs{x \pm y} \le \abs{x} + \abs{y}$\\
 Cauchy-Schwarz-Ungleichung: & $\left| \vec x^\top \bdot \vec y \right| \le \| \vec x\| \cdot \| \vec y\|$ \\
 Bernoulli-Ungleichung: & $(1+x)^n \ge 1+nx$\\ \cmrule
 Arithmetische Summenformel &  $\sum \limits_{k=1}^{n} k = \frac{n (n+1)}{2} $ \\
 Geometrische Summenformel &  $ \sum \limits_{k=0}^{n} q^k = \frac{1 - q^{n+1}}{1-q}$ \\
 Binomialkoeffizient & $\binom nk = \binom n{n-k} = \frac{n!}{k! \cdot (n-k)!}$\\
-\ctrule
-\end{tabular*} }
-}
+\end{tablebox}
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 \subsection{Sinus, Cosinus \quad $\sin^2(x) \bs + \cos^2(x) = 1$}
 \begin{equation*}
 	e^{\j x} = \cos (x) + \j \cdot \sin(x)
 \end{equation*}
 \setlength{\tabcolsep}{4pt}
-\tablebox{
-\begin{tabular*}{\columnwidth}{@{\extracolsep\fill}c|c|c|c|c||c|c|c|c@{}} \ctrule
+\begin{tablebox}{@{\extracolsep\fill}c|c|c|c|c||c|c|c|c@{}} 
 $x$ & $0$ & $\pi / 6$ & $\pi / 4$ & $\pi / 3$ & $\frac{1}{2}\pi$ & $\pi$ & $\frac{3}{2}\pi$ & $2 \pi$ \\
 $\varphi$ & $\SI{0}{\degree}$ & $\SI{30}{\degree}$ & $\SI{45}{\degree}$ & $\SI{60}{\degree}$ & $\SI{90}{\degree}$ & $\SI{180}{\degree}$ & $\SI{270}{\degree}$ & $\SI{360}{\degree}$ \\ \cmrule
 $\sin$ & $0$ & $\frac{1}{2}$ & $\frac{1}{\sqrt{2}}$ & $\frac{\sqrt 3}{2}$ & $1$ & $0$ & $-1$ & $0$ \\
 $\cos$ & $1$ & $\frac{\sqrt 3}{2}$ & $\frac{1}{\sqrt 2}$ & $\frac{1}{2}$ & $0$ & $-1$ & $0$ & $1$ \\
-$\tan$ & $0$ & $\frac{\sqrt{3}}{3}$ &	$1$	&	$\sqrt{3}$ & $\pm \infty$ & $0$ & $\mp \infty$ & $0$\\ \cbrule
-\end{tabular*} }\\
+$\tan$ & $0$ & $\frac{\sqrt{3}}{3}$ &	$1$	&	$\sqrt{3}$ & $\pm \infty$ & $0$ & $\mp \infty$ & $0$\\ 
+\end{tablebox}
 \begin{tabular*}{\columnwidth}{@{\extracolsep\fill}ll@{}}
 	Additionstheoreme &  Stammfunktionen\\
  	$\cos (x - \frac{\pi}{2}) = \sin x$ & $\int x \cos(x) \diff x = \cos(x) + x \sin(x)$\\
@@ -257,17 +251,16 @@ $\tan$ & $0$ & $\frac{\sqrt{3}}{3}$ &	$1$	&	$\sqrt{3}$ & $\pm \infty$ & $0$ & $\
 	$\cosh x  = \frac{1}{2}(e^x +e^{-x})= \cos(\j x)$ & $\cosh x + \sinh x = e^{x}$\\
 	\end{tabular*}\\
 	\textbf{Kardinalsinus} $\mathrm{si}(x) = \frac{\sin(x)}{x}$ \qquad \textbf{genormt:} $\sinc(x) = \frac{\sin(\pi x)}{\pi x}$
-}
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 	\subsection{Integrale $\int e^x\;\mathrm dx = e^x = (e^x)'$}
 	\begin{tabularx}{\columnwidth}{lX}
 	Partielle Integration: & $\int uw'=uw-\int u'w$\\
 	Substitution: & $\int f(g(x)) g'(x)\diff x=\int f(t)\diff t$
 	\end{tabularx}
-	\tablebox{
+	\begin{tablebox}{@{\hspace{5mm}}c@{\extracolsep\fill}c@{\extracolsep\fill}c@{\hspace{5mm}}} 
 	\renewcommand{\arraystretch}{1.6}
-	\begin{tabular*}{\columnwidth}{@{\hspace{5mm}}c@{\extracolsep\fill}c@{\extracolsep\fill}c@{\hspace{5mm}}} \ctrule
 		$F(x)$ & $f(x)$ & $f'(x)$ \\ \cmrule
 		$\frac{1}{q+1}x^{q+1}$ & $x^q$ & $qx^{q-1}$ \\
 		\raisebox{-0.2em}{$\frac{2\sqrt{ax^3}}{3}$} & $\sqrt{ax}$ & \raisebox{0.2em}{$\frac{a}{2\sqrt{ax}}$}\\
@@ -276,17 +269,17 @@ $\tan$ & $0$ & $\frac{\sqrt{3}}{3}$ &	$1$	&	$\sqrt{3}$ & $\pm \infty$ & $0$ & $\
 		$\frac{a^x}{\ln(a)}$ & $a^x$ & $a^x \ln(a)$ \\
 		$-\cos(x)$ & $\sin(x)$ & $\cos(x)$\\
 		$\cosh(x)$ & $\sinh(x)$ & $\cosh(x)$\\
-		$-\ln |\cos(x)|$ & $\tan(x)$ & $\frac{1}{\cos^2(x)}$ \\ \cbrule
-	\end{tabular*} }\\
+		$-\ln |\cos(x)|$ & $\tan(x)$ & $\frac{1}{\cos^2(x)}$ \\ 
+	\end{tablebox}
 
 	\begin{tabularx}{\columnwidth}{Ll@{}}
 	\multicolumn{2}{c}{$\int e^{at} \sin(bt) \diff t = e^{at} \frac{a \sin(bt) + b \cos(bt)}{a^2 + b^2}$}\\
 	$\int \frac{\diff t}{\sqrt{at+b}} = \frac{2 \sqrt{at+b}}{a}$ & $\int t^2 e^{at} \diff t = \frac{(ax-1)^2+1}{a^3} e^{at}$\\
 	$\int t e^{at} \diff t = \frac{at-1}{a^2} e^{at}$ & $\int x e^{ax^2} \diff x = \frac{1}{2a} e^{ax^2}$\\
 	\end{tabularx}
-}
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 \subsection{Exponentialfunktion und Logarithmus}
 \begin{tabular*}{\columnwidth}{l@{\extracolsep\fill}ll}
 	$a^x = e^{x \ln a}$ & $\log_a x = \frac{\ln x}{\ln a}$ & $\ln x \le x -1$\\
@@ -297,10 +290,12 @@ $\tan$ & $0$ & $\frac{\sqrt{3}}{3}$ &	$1$	&	$\sqrt{3}$ & $\pm \infty$ & $0$ & $\
 \begin{tabularx}{\columnwidth}{CCC}
 $\underset{\text{Harmonische Reihe}}{\sum\limits_{n=1}^\infty \frac{1}{n} \ra \infty}$ & $\underset{\text{Geometrische Reihe}}{\sum\limits_{n=0}^\infty q^n \stackrel{|q|<1}= \frac{1}{1-q}}$ & $\underset{\text{Exponentialreihe}}{\sum\limits_{n = 0}^{\infty} \frac{z^n}{n!} = e^z}$
 \end{tabularx}
-}
+\end{sectionbox}
 
 \section{Lösung nichtlinearer Gleichungen}
-\sectionbox{
+% =============================================================================================================00
+Exakte Lösung $x*$, Fehler $\epsilon=x-x*$
+\begin{sectionbox}
 \subsection{Fixpunktiteration}
 \begin{equation*}
 	x^{(k + 1)} = \Phi(x^{(k)})
@@ -315,9 +310,9 @@ Falls $0 < \abs{\Phi'(x^\star)} < 1 \Rightarrow$ lineare Konvergenz mit
 \end{equation*}
 Falls $\Phi'(x^\star) = 0$ und $\Phi''(x^\star) \ne 0 \Rightarrow$ quadratische Konvergenz \\
 \textbf{Allgemein:} Konvergenzordnung $n \Leftrightarrow$\\ $\Phi'(x^\star) = \Phi''(x^\star) = \ldots = \Phi^{(n - 1)}(x^\star) = 0$ und $\Phi^{(n)}(x^\star) \ne 0$
-}
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 \subsection{Newton-Raphson}
 	Funktion durch Gerade annähern und Nullstelle bestimmen. An dieser Stelle den Vorgang wiederholen.\\
 \textbf{Ausgangsproblem:}
@@ -353,27 +348,23 @@ Falls die Auswertung von $f'(x)$ vermieden werden soll:
 \begin{equation*}
 	\ma J_{\vec f}\left (\vec x^{(k)}\right ) \vec x^{(k + 1)} = \ma J_{\vec f}\left (\vec x^{(k)}\right )\cdot \left (\vec x^{(k)} - \vec f(x^{(k)}\right )
 \end{equation*}
-}
+\end{sectionbox}
 
 \section{Lösung linearer Gleichungssysteme}
-\sectionbox{
+\begin{sectionbox}
 \textbf{Ausgangsproblem:}
 \begin{equation*}
 	\ma{A} \vec{x} = \vec{b}
 \end{equation*}
-\tablebox{
-	\begin{tabularx}{\columnwidth}{lX}
-		\ctrule
+\begin{tablebox}{ll}
 		$\ma{A} = \ma{M} - \ma{N}$ & Systemmatrix\\
 		$\ma{D}$ & Diagonalmatrix \texttt{diag(diag(}$\ma{A}$\texttt{))}\\
 		$\ma{L}$ & Linke untere Dreiecksmatrix \texttt{tril(}$\ma{A},-1$\texttt{)}\\
 		$\ma{U}$ & Rechte obere Dreiecksmatrix \texttt{triu(}$\ma{A},1$\texttt{)}\\
-		\cbrule
-	\end{tabularx}
-}
-}
+\end{tablebox}
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 \subsection{Jacobi-Verfahren}
 Konvergiert falls $\rho(\ma{K}_j) < 1$ oder falls $\ma{A}$ strikt diagonaldominant\\
 \begin{equation*}
@@ -391,9 +382,9 @@ Konvergiert falls $\rho(\ma{K}_j) < 1$ oder falls $\ma{A}$ strikt diagonaldomina
 \begin{equation*}
 	\ma P = \ma D^{-1}\quad\Rightarrow\quad\ma P\ma A \vec x = \ma P\vec b
 \end{equation*}
-}
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 \subsection{Gauß-Seidel-Verfahren}
 	Unterschied zu Jacobi: Komponentenweise Berechnung von $\vec x$ mit bereits iterierten Werten. (Kürzere Iterationszyklen)
 \begin{equation*}
@@ -416,9 +407,9 @@ Falls $A$ tridiagonal und positiv definit
 \begin{equation*}
 	\ma P = (\ma D + \ma L)^{-1}\quad\Rightarrow\quad\ma P\ma A \vec x = \ma P\vec b
 \end{equation*}
-}
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 \subsection{Successive Over-Relaxation}
 \begin{equation*}
 	\ma{K}_{SOR} = (\ma{D} + \omega \ma{L})^{-1} (\ma{D}(1 - \omega) - \omega \ma{U})
@@ -437,9 +428,9 @@ Falls $A$ positiv definit und tridiagonal $\Rightarrow \rho(\ma{K}_{gs}) = \rho(
 \begin{equation*}
 	\omega_\text{opt} = \frac{2}{1 + \sqrt{1 - \rho(\ma{K}_j)^2}}
 \end{equation*}
-}
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 \subsection{Gradienten-Verfahren}
 \textbf{Voraussetzungen:} $\ma A = \ma A^T$ und $\ma A$ positiv definit
 \begin{equation*}
@@ -451,18 +442,19 @@ Falls $A$ positiv definit und tridiagonal $\Rightarrow \rho(\ma{K}_{gs}) = \rho(
 \begin{equation*}
 	\alpha^{(k)} = \frac{\vec{r}^{(k)T} \vec{r}^{(k)}}{\vec{r}^{(k)T} \ma{A} \vec{r}^{(k)}}
 \end{equation*}
+Optimierung: $\vec{r}^{(k+1)} = \vec{r}^{(k)} - \alpha^{(k)} \ma A \vec{r}^{(k)}$
 \emph{Matrixdarstellung:}
 \begin{equation*}
 	\vec{x}^{(k + 1)} = \vec{x}^{(k)} + \alpha^{(k)} \vec{r}^{(k)}
 \end{equation*}
-}
+\end{sectionbox}
 
 \section{Matrix Zerlegung}
-\sectionbox{
+\begin{sectionbox}
 	\subsection{LR-Zerlegung von Matrizen (\textbf{L}ower and \textbf{U}pper)}
 Geeignetes Lösungsverfahren für $\ma A \vec x = \vec b$, falls $n < 500$\\
 $\ma A = \ma L \cdot \ma R$ \quad mit $\ma R$ obere Dreiecksmatrix ($\rang \ma A = \rang\ma R$)\\
-\cookbox{Gaußverfahren durch Matrixmultiplikaiton}{
+\begin{cookbox}{Gaußverfahren durch Matrixmultiplikaiton}
 	\item Zerlegen des Problems $\ma A \vec x = \vec b$ in das Problem $\ma L (\ma R \vec x) = \vec b$  mit $\ma A = \ma L \ma R$ bzw. $\ma L \vec y = \ma P \vec b$ (mit Pivotisierung)
 	\item Zerlegungsmatrix (für $2 \times 2$): \\ $\ma A = \mat{a & b \\ c & d} \ra \mat{a & b \\ \frac{c}{a} & d - \frac{c}{a} b} = \ma A^*$ mit den Eliminationsfaktoren $l_{ik} = \frac{a_{ik}}{a_{kk}} \overset{z.B.}{=} \frac{c}{a}$
 	\item Für jede Spalte der unteren Dreiecksmatrix wiederholen.\\
@@ -474,25 +466,21 @@ $\ma A = \ma L \cdot \ma R$ \quad mit $\ma R$ obere Dreiecksmatrix ($\rang \ma A
 	\item \textbf{Vorwärtseinsetzen:} $\ma L \vec y = \vec b$ bzw. $\ma L \vec y = \ma P \vec b$ (mit Pivotisierung)\quad (Löse nach $\vec y$)
 	\item \textbf{Rückwärtseinsetzen:} $\ma R \vec x = \vec y$ \quad (Löse nach $\vec x$)
 
-	} \\
+\end{cookbox}
 
 	\subsubsection{Pivotisierung (Spaltenpivotsuche)}
 	Permutationsmatrix $\ma P^\top = \ma P^{-1}$ vertauscht Zeilen, damit LR Zerlegung bei 0 Einträgen möglich ist.
 	Tausche so, dass man durch die betragsmäßig größte Zahl dividiert (Pivotelement) %Verhindert Auslöschung
 
 	\subsubsection{Rechenaufwand (FLOPS)}
-	\tablebox{
-		\begin{tabularx}{\columnwidth}{lX}
-			\ctrule
+	\begin{tablebox}{ll}
 			LU-Zerlegung & $\frac{2}{3}n^3 - \frac{1}{2}n^2 - \frac{1}{6}n$\\
 			Vorwärtseinsetzen & $n^2 - n$\\
 			Rückwärtseinsetzen & $n^2$\\
-			\cbrule
-		\end{tabularx}
-	}
-}
+	\end{tablebox}
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 		\subsection{QR-Zerlegung}
 	$\ma A = \ma Q \ma R$ mit $\ma Q^{-1} = \ma Q^\top$\\
 	Verfahren: Housholder (numerisch stabil) , Gram-Schmidt, Givens Rotation.\\
@@ -501,10 +489,10 @@ $\ma A = \ma L \cdot \ma R$ \quad mit $\ma R$ obere Dreiecksmatrix ($\rang \ma A
 
 	\subsubsection*{Lösen von LGSen mit der $Q R$ Zerlegung}
 	Bestimme $\vec x$ durch Rückwärtssubsitution aus $\ma R \vec x = \ma Q^\top \vec b$
-}
+\end{sectionbox}
 
-\sectionbox{
-	\cookbox{QR-Zerlegung mit Householder-Transformation für $\ma A \in \mathbb R^{m\times n }$}{
+\begin{sectionbox}
+	\begin{cookbox}{QR-Zerlegung mit Householder-Transformation für $\ma A \in \mathbb R^{m\times n }$}
 		\item Setze $\vec a = \vec s_1$ (erste Spalte) und $\vec v = \vec a + \sgn ( a_1) \norm{\vec a} \vec e_1$
 		\item Konstruiere die \emph{Householder}-Transformationsmatrix mit \\
 		$\ma H_v = \ma E_m - \frac{2}{\vec v^\top \vec v} \vec v \vec v^\top$
@@ -514,11 +502,11 @@ $\ma A = \ma L \cdot \ma R$ \quad mit $\ma R$ obere Dreiecksmatrix ($\rang \ma A
 		\item Setze anschließend $\ma Q_2 = \ma H_v$ und fülle mit erweitere mit $E_m$ (d.h. erste Zeile und Spalte die von $E_m$)
 		\item Nach $p = \min \eset{m - 1, n}$ Schritten: $\ma H_v \ma A^*$ ist obere Dreiecksmatrix
 		\item Somit ist mit $\ma Q^\top = \ma Q_p \cdots \ma Q_1$ ist $\ma Q^\top \ma A = \ma R$ und $\ma A = \ma Q \ma R$
-	}
-}
+	\end{cookbox}
+\end{sectionbox}
 
-\sectionbox{
-	\cookbox{QR-Zerlegung mit Givens-Rotation für $\ma A \in \mathbb R^{m\times n }$}{
+\begin{sectionbox}
+	\begin{cookbox}{QR-Zerlegung mit Givens-Rotation für $\ma A \in \mathbb R^{m\times n }$}
 		\item Setze $\ma R = \ma A$
 		\item Setze $\ma G_\text{gesamt} = \ma E_m$
 		\item Wiederhole folgende Schritte für alle Elemente in $\ma R$, welche $0$ werden sollen (in Reihe $x$ und Spalte $y$), spaltenweise von links nach rechts und in jeder Spalte von unten nach oben
@@ -539,10 +527,10 @@ $\ma A = \ma L \cdot \ma R$ \quad mit $\ma R$ obere Dreiecksmatrix ($\rang \ma A
 		\item Setze $\ma R = \ma G \ma R$
 		\item Fahre, falls nötig, mit nächstem Element in $\ma R$ fort
 		\item Setze $\ma Q = \ma G_\text{gesamt}^T$
-	}
-}
+	\end{cookbox}
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 \subsection{Dünnbesetzte Matrizen}
 \textbf{Ziel:} effizienteres Speichern von Matrizen mit vielen 0 Einträgen.
 \begin{equation*}
@@ -554,9 +542,7 @@ e & 0 & f & 0
 \end{bmatrix}
 \end{equation*}
 
-\tablebox{
-\begin{tabularx}{\columnwidth}{@{}lCCC}
-\ctrule
+\begin{tablebox}{@{}lccc}
 				& \textbf{COO} 		& \textbf{CRS} 		& \textbf{CCS}		\\
 \cmrule
 \texttt{row} 	& $\{1,2,2,3,4,4\}$ & 					& $\{1,4,2,2,4,3\}$	\\
@@ -564,18 +550,16 @@ e & 0 & f & 0
 \texttt{col} 	& $\{1,2,3,4,1,3\}$ & $\{1,2,3,4,1,3\}$ & 					\\
 \texttt{colptr}	& 					& 					& $\{1,3,5,6,7\}$	\\
 \texttt{val} 	& $\{a,b,c,d,e,f\}$ & $\{a,b,c,d,e,f\}$ & $\{a,b,c,d,e,f\}$	\\
-\cbrule
-\end{tabularx}
-}
+\end{tablebox}
 \begin{tabularx}{\columnwidth}{@{}lX}
 \textbf{COO} & Zeilen und Spaltenindex von \texttt{val}\\
 \textbf{CRS} & \texttt{rowptr}(i) zeigt auf j-tes Element von \texttt{col}\\
 \textbf{CCS} & \texttt{colptr}(i) zeigt auf j-tes Element von \texttt{row}\\
 \end{tabularx}
-}
+\end{sectionbox}
 
 \section{Numerische Differentiation}
-\sectionbox{
+\begin{sectionbox}
 \subsection{Vorwärtsdifferenz}
 \begin{equation*}
 	f'(x_0) \approx \tilde{f}_\text{Vor}'(x_0) = \frac{f(x_0 + h) - f(x_0)}{h}
@@ -599,10 +583,11 @@ e & 0 & f & 0
 \begin{equation*}
 	f'(x_0) - \tilde{f}_\text{Zentral}'(x_0) \in \mathcal{O}(h^2)
 \end{equation*}
-}
+	$h_{opt} = \sqrt[3]{\frac{3\epsilon}{M}}$ \qquad Max. Rundungsfehler $\epsilon$
+\end{sectionbox}
 
 \section{Numerische Integration}
-\sectionbox{
+\begin{sectionbox}
 \subsection{Polynom-Ansätze}
 \begin{equation*}
 	\int_a^b f(x) \diff x \approx \int_a^b P(x) \diff x
@@ -623,9 +608,9 @@ e & 0 & f & 0
 \begin{equation*}
 	P(x) = f[x_0] + \sum_{k = 1}^n f[x_0, \dots, x_k] (x - x_0) \dots (x - x_{k - 1})
 \end{equation*}
-}
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 \subsection{Newton-Cotes}
 \begin{equation*}
 	\int_a^b f(x) \diff x \approx \sum_{i = 0}^n g_i f(x_i)
@@ -643,9 +628,9 @@ falls $n = 1$:
 \begin{equation*}
 	\int_a^b f(x) \diff x \approx h \left( \frac{f(a) + f(b)}{2} + \sum_{k = 1}^{n - 1} f(a + k \cdot h) \right)
 \end{equation*}
-}
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 \subsubsection{Simpson $\frac{1}{3}$ (Fassregel)}
 falls $n = 2$:
 \begin{equation*}
@@ -664,9 +649,9 @@ falls $n = 3$:
 \begin{equation*}
 	\int_a^b f(x) \diff x \approx \frac{3h}{8} (f(a) + 3 f(a + h) + 3 f(a + 2h) + f(b))
 \end{equation*}
-}
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 \subsection{Kubische Splines}
 \begin{equation*}
 	S_j(x) = a_j + b_j (x-x_j) + c_j (x-x_j)^2 + d_j (x-x_j)^3
@@ -689,9 +674,11 @@ Eingespannter Rand:
 \begin{equation*}
 	S'(x_0) = f'(x_0) \wedge S'(x_n) = f'(x_n)
 \end{equation*}
-}
-\sectionbox{
-\cooknumbox{Parameterbestimmung}{
+\end{sectionbox}
+
+
+\begin{sectionbox}
+\begin{cookbox}{Parameterbestimmung}
 \item $a_j = f(x_j)$ und $h_j = x_{j+1} - x_j$
 \item Löse LGS für $\vec c$: $\ma A \vec c = \vec l$\\
 \scalebox{.9}{$\ma A = \begin{bmatrix}
@@ -706,22 +693,22 @@ $\vec l = \begin{bmatrix}
 \end{bmatrix}$
 \item $b_j = \frac{1}{h_j}(a_{j+1}- a_j)-\frac{h_j}{3}(2c_j+c_{j+1})$
 \item $d_j = \frac{1}{3h_j}(c_{j+1}-c_j)$
-}
-}
+\end{cookbox}
+\end{sectionbox}
 
 \section{Least Squares}
-\sectionbox{
+\begin{sectionbox}
 \subsection{Anwendung in der linearen Ausgleichsrechnung}
 (Minimierung d. Restes)\\
 Problem: $\ma A^\top \ma A \vec x = \ma A^\top \vec b$ mit $\ma A \in \mathbb R^{m \times n }$ und $\vec b \in \mathbb R^{m}$ \\
-\cookbox{Lösen der Normalengleichung}{
+\begin{cookbox}{Lösen der Normalengleichung}
 	\item Bestimme eine reduzierte QR-Zerlegung \\ $\ma A = \tilde{\ma Q}  \tilde{\ma R}$ mit $\tilde{\ma Q} \in \mathbb R^{m \times n}, \tilde{\ma R} \in \mathbb R^{n \times n}$
 	\item Löse $\tilde{\ma R } \vec x =\tilde{\ma Q}^\top \vec b$
-}
+\end{cookbox}
 $\norm{\vec b - \ma A \vec x}^2 = \norm{\ma Q^\top (\vec b - \ma A \vec x)}^2 = \norm{\tilde{\vec b} - \tilde{\ma R} \vec x}^2 + \norm{\vec c}^2 \ge \norm{\vec c^2}$
-}
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 \subsection{Linear Least Squares}
 \begin{equation*}
 	y = a x + b
@@ -737,10 +724,10 @@ $\norm{\vec b - \ma A \vec x}^2 = \norm{\ma Q^\top (\vec b - \ma A \vec x)}^2 = 
 \begin{equation*}
 	\argmin_{a_0, \ldots, a_n} E_n(a_0, \ldots, a_n) = \sum_{i = 1}^n \left( y_i - P(x_i) \right)^2
 \end{equation*}
-}
+\end{sectionbox}
 
 \section{Numerische Lösung von Differentialgleichungen}
-\sectionbox{
+\begin{sectionbox}
 \textbf{Ausgangsproblem:}
 \begin{equation*}
 	\dot{x}(t) = f(x(t))
@@ -766,9 +753,9 @@ $\norm{\vec b - \ma A \vec x}^2 = \norm{\ma Q^\top (\vec b - \ma A \vec x)}^2 = 
 \begin{equation*}
 	\hat{x}(\nu + 1) = \hat{x}(\nu) + \frac{\Delta t}{2} (\hat{f}(\nu) + \hat{f}(\nu + 1))
 \end{equation*}
-}
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 \subsection{Gear}
 \begin{equation*}
 	\hat{x}(\nu + 2) = \frac{4}{3} \hat{x}(\nu + 1) - \frac{1}{3} \hat{x}(\nu) + \frac{2}{3} \Delta t \hat{f}(\nu + 2)
@@ -793,7 +780,7 @@ $k=2$ & $-\frac{1}{2}$ & $\frac{3}{2}$ & & \\
 $k=3$ & $\frac{5}{12}$ & $-\frac{16}{12}$ & $\frac{23}{12}$ & \\
 $k=4$ & $-\frac{9}{24}$ & $\frac{37}{24}$ & $-\frac{59}{24}$ & $\frac{55}{24}$
 \end{tabularx}
-}
+\end{sectionbox}
 
 \section{Matlab Sample Code}
 \begin{lstlisting}
@@ -983,7 +970,7 @@ end
 \end{lstlisting}
 
 \section{Blabla Fragen}
-\sectionbox {
+\begin{sectionbox}
 
 \begin{enumerate}
 	\item \textbf{Nennen Sie einen Vorteil der Dividierten Differenzen gegenüber der Lagrange-Interpolation.}
@@ -1035,7 +1022,7 @@ end
 %	\item \textbf{}
 \end{enumerate}
 
-}
+\end{sectionbox}
 
-\end{multicols*}
+
 \end{document}
