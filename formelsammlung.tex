@@ -9,7 +9,7 @@
 
 
 % Dokumentklasse (Schriftgröße 6, DIN A4, Artikel)
-\documentclass[german]{latex4ei/latex4ei_fs}
+\documentclass[german]{latex4ei/latex4ei_sheet}
 
 \usepackage[european]{circuitikz}
 \usepackage{tabularx}
@@ -108,6 +108,7 @@ Diagonalelemente sind größer als die restlichen Elemente der selben Zeile:\\
 
 \begin{sectionbox}
 	\subsection{Kondition}
+	Verstärkung von Eingangsfehler im ungünstigsten Fall.
 	\begin{symbolbox}
 		\begin{tabularx}{\columnwidth}{lXlX}
 			$y = f(x)$ & Unbekannte & $x$ & Problemdaten
@@ -166,21 +167,6 @@ $n = \rang\ma A + \dim\ker\ma A$ & $m = \rang\ma A^T + \dim\ker\ma A^T$
 Symmetrisch & $\ma A = \ma A^T$ & Schiefsymmetrisch & $\ma A = -\ma A^T$\\
 Orthogonal & $\ma A\ma A^T = \ma I$ & $\det(\ma A) = \pm 1$ & $\ma A^{-1} = \ma A^T$
 \end{tabularx}
-\end{sectionbox}
-
-\begin{sectionbox}
-\subsubsection{Matrixnorm}
-\begin{tabularx}{\columnwidth}{LX}
-	$\norm{\ma{A}} = 0 \Rightarrow \ma{A} = 0$ & $\norm{\alpha \ma{A}} = \abs{\alpha} \norm{\ma{A}}$\\
-	$\norm{\ma{A} + \ma{B}} \le \norm{\ma{A}} + \norm{\ma{B}}$ & $\norm{\ma{A} \cdot \ma{B}} \le \norm{\ma{A}} \cdot \norm{\ma{B}}$
-\end{tabularx}
-\begin{tabular}{@{}r@{ = }ll}
-	$\norm{\ma{A}}_M$ & $n\cdot\underset{i,j}{\max}\abs{a_{ij}}$ & Gesamtnorm, Matrixnorm\\
-	$\norm{\ma{A}}_\infty$ & $\underset{i}{\max}\sum\limits_{j=1}^n\abs{a_{ij}}$ & Zeilennorm (max Zeilensumme)\\
-	$\norm{\ma{A}}_1$ & $\underset{j}{\max}\sum\limits_{i=1}^n\abs{a_{ij}}$ & Spaltennorm (max Spaltensumme)\\
-	$\norm{\ma{A}}_E$ & $\sqrt{\sum\limits_{i=1}\sum\limits_{j=1}\abs{a_{ij}}^2}$ & Frobeniusnorm $(||\ma{I}||_E = \sqrt{n})$\\
-	$\norm{\ma{A}}_\lambda$ & $\sqrt{\lambda_\text{max}(\ma{A}^T\cdot\ma{A})}$ & Spektralnorm, Hilbertnorm \\
-\end{tabular}
 
 \subsubsection{Determinante von $A\in \mathbb K^{n\times n}$: $\det(A)=|A|$}
 $\det\begin{pmatrix}\ma A & \ma 0\\ \ma C&\ma D\end{pmatrix}=\det\begin{pmatrix}\ma A&\ma B\\\ma 0&\ma D\end{pmatrix}=\det(\ma A)\cdot\det(\ma D)$ \\
@@ -191,7 +177,49 @@ $\det(\ma A\ma B) = \det(\ma A)\det(\ma B) = \det(\ma B)\det(\ma A) = \det(\ma B
 Hat $\ma A$ 2 linear abhäng. Zeilen/Spalten $\Rightarrow |\ma A|=0$ \\
 Entwicklung. n. $i$ter Zeile: $|\ma A|=\sum\limits_{i=1}^n (-1)^{i+j} \cdot a_{ij} \cdot |\ma A_{ij}|$\\
 Inverse $2\times 2$: \quad $\mat{a & b\\ c & d}^{-1} = \frac{1}{ad-bc} \mat{d & -b\\ -c& a}$
+
 \end{sectionbox}
+
+
+
+\begin{sectionbox}
+	\subsection{Norm $|| \cdot ||$}
+	Definition: Zahl, die die „Größe“ eines Objekts $\mathcal X$ beschreibt.\\
+	Jede Norm muss folgende 3 Axiome erfüllen::
+	\begin{enumerate}
+		\item Definitheit: $\norm{\mathcal X} = 0 \Ra \mathcal X = 0$
+		\item absolute Homogenität:	$\norm{\alpha\cdot \mathcal X} = |\alpha| \cdot \norm{\mathcal X}$ \qquad ($\alpha$ ist skalar)
+		\item Dreiecksungleichung: $\norm{\mathcal X + \mathcal Y} \leq \norm{\mathcal X} + \norm{\mathcal Y}$
+	\end{enumerate}
+
+		\subsubsection{Vektornormen:}
+		\begin{tablebox}{ll}
+			Summennorm & $\norm{\vec x}_1 = \sum\limits_{i=1}^n |x_i|$\\
+			Euklidische Norm & $\norm{\vec x}_2 = \sqrt{\sum\limits_{i=1}^n |x_i|^2}$\\
+			Maximumnorm & $\norm{\vec x}_\infty = \max\limits_{i=1,...,n} |x_i|$\\
+			Alg. p-Norm & $\norm{\vec x}_p = \left( \sum\limits_{i=1}^n |x_i|^p \right)^{1/p}$
+		\end{tablebox}
+
+
+	\subsubsection{Matrixnormen}
+	Für Matrixnormen gilt zu den 3 Standard Axiomen zusätzlich:
+	\begin{enumerate} \setcounter{enumi}{3}
+		\item Submultiplikativität: $\norm{\ma A + \ma B} \leq \norm{\ma A} \cdot \norm{\ma B}$
+	\end{enumerate}
+
+	\begin{tablebox}{lr@{ = }l}
+	Gesamtnorm, Matrixnorm & $\norm{\ma{A}}_M$ & $n\cdot\underset{i,j}{\max}\abs{a_{ij}}$\\
+	Zeilennorm (max Zeilensumme) & $\norm{\ma{A}}_\infty$ & $\underset{i}{\max}\sum\limits_{j=1}^n\abs{a_{ij}}$ \\
+	Spaltennorm (max Spaltensumme) & $\norm{\ma{A}}_1$ & $\underset{j}{\max}\sum\limits_{i=1}^n\abs{a_{ij}}$ \\
+	$\underset{\text{euklidische Norm}}{\text{Frobeniusnorm}}$ $(||\ma{I}||_E = \sqrt{n})$ & $\norm{\ma{A}}_E$ & $\sqrt{\sum\limits_{i=1}\sum\limits_{j=1}\abs{a_{ij}}^2}$\\
+	Spektralnorm, Hilbertnorm & $\norm{\ma{A}}_\lambda$ & $\sqrt{\lambda_\text{max}(\ma{A}^\top\cdot\ma{A})}$\\
+	\end{tablebox}
+
+\end{sectionbox}
+
+
+
+
 
 \begin{sectionbox}
 \subsection{Jacobi-Matrix}
@@ -226,9 +254,7 @@ Binomialkoeffizient & $\binom nk = \binom n{n-k} = \frac{n!}{k! \cdot (n-k)!}$\\
 
 \begin{sectionbox}
 \subsection{Sinus, Cosinus \quad $\sin^2(x) \bs + \cos^2(x) = 1$}
-\begin{equation*}
-	e^{\j x} = \cos (x) + \j \cdot \sin(x)
-\end{equation*}
+\qquad $e^{\j x} = \cos (x) + \j \cdot \sin(x)$
 \setlength{\tabcolsep}{4pt}
 \begin{tablebox}{@{\extracolsep\fill}c|c|c|c|c||c|c|c|c@{}} 
 $x$ & $0$ & $\pi / 6$ & $\pi / 4$ & $\pi / 3$ & $\frac{1}{2}\pi$ & $\pi$ & $\frac{3}{2}\pi$ & $2 \pi$ \\
@@ -481,9 +507,9 @@ $\ma A = \ma L \cdot \ma R$ \quad mit $\ma R$ obere Dreiecksmatrix ($\rang \ma A
 \end{sectionbox}
 
 \begin{sectionbox}
-		\subsection{QR-Zerlegung}
+		\subsection{QR-Zerlegung (existiert immer)}
 	$\ma A = \ma Q \ma R$ mit $\ma Q^{-1} = \ma Q^\top$\\
-	Verfahren: Housholder (numerisch stabil) , Gram-Schmidt, Givens Rotation.\\
+	Berechnung (Verfahren): Housholder (numerisch stabil) , Gram-Schmidt, Givens Rotation.\\
 	$\ma A \xrightarrow{EZF} \ma H\ma A \xrightarrow{EZF} \tilde{\ma H} \ma H \ma A = \ma R \Ra \ma A = \ma H^\top \tilde{\ma H}^\top \ma R$\\
 	Aufgabe: Finde Vektor $\vec v$ der Senkrecht auf $\ma H$ steht.\\
 
@@ -1025,4 +1051,41 @@ end
 \end{sectionbox}
 
 
+
+
+\begin{sectionbox}
+	\subsection{}
+\end{sectionbox}
+
+
+
+
 \end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{sectionbox}
+\subsubsection{Matrixnorm}
+\begin{tabularx}{\columnwidth}{LX}
+	$\norm{\ma{A}} = 0 \Rightarrow \ma{A} = 0$ & $\norm{\alpha \ma{A}} = \abs{\alpha} \norm{\ma{A}}$\\
+	$\norm{\ma{A} + \ma{B}} \le \norm{\ma{A}} + \norm{\ma{B}}$ & $\norm{\ma{A} \cdot \ma{B}} \le \norm{\ma{A}} \cdot \norm{\ma{B}}$
+\end{tabularx}
+\begin{tabular}{@{}r@{ = }ll}
+	$\norm{\ma{A}}_M$ & $n\cdot\underset{i,j}{\max}\abs{a_{ij}}$ & Gesamtnorm, Matrixnorm\\
+	$\norm{\ma{A}}_\infty$ & $\underset{i}{\max}\sum\limits_{j=1}^n\abs{a_{ij}}$ & Zeilennorm (max Zeilensumme)\\
+	$\norm{\ma{A}}_1$ & $\underset{j}{\max}\sum\limits_{i=1}^n\abs{a_{ij}}$ & Spaltennorm (max Spaltensumme)\\
+	$\norm{\ma{A}}_E$ & $\sqrt{\sum\limits_{i=1}\sum\limits_{j=1}\abs{a_{ij}}^2}$ & $\underset{\text{euklidische Norm}}{\text{Frobeniusnorm}}$ $(||\ma{I}||_E = \sqrt{n})$\\
+	$\norm{\ma{A}}_\lambda$ & $\sqrt{\lambda_\text{max}(\ma{A}^T\cdot\ma{A})}$ & Spektralnorm, Hilbertnorm \\
+\end{tabular}
+
+
+\end{sectionbox}

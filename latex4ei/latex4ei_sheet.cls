@@ -117,7 +117,7 @@
 		\parbox{2.3cm}{
 			\includegraphics[height=1.4cm]{Logo.pdf}		
 		}
-		\parbox{4.5cm}{
+		\parbox{4cm}{
 			\huge\textbf{#1}
 		}}
 	}
@@ -165,7 +165,7 @@
 % Environments
 % ======================================================================
 	\setlength{\itemindent}{0em}
-	\setlength\leftmargini{1.0em}
+	\setlength\leftmargini{2.0em}
 	\setlength\itemsep{0em}
 
 
