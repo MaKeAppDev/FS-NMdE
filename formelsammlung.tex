@@ -65,6 +65,10 @@ escapeinside={\%*}{*)}					% if you want to add a comment within your code
 \DeclareMathOperator{\cond}{cond}
 \DeclareMathOperator{\rang}{rang}
 
+\DeclareMathOperator{\Bild}{Bild}
+\DeclareMathOperator{\defect}{def}
+
+
 % Dokumentbeginn
 % ======================================================================
 \begin{document}
@@ -149,35 +153,56 @@ $a_{21}x_1 + a_{22}x_2 = b_2$ & $x_2 = \frac{-a_{21}b_1 + a_{11}b_2}{a_{11}a_{22
 \end{sectionbox}
 
 \begin{sectionbox}
-\subsection{Matrizen}
-\begin{tabularx}{\columnwidth}{LX}
-$\Sp\ma A = \sum a_{ii} = \sum\lambda_i$  & $\det\ma A = \prod\lambda_i$\\
-$(\ma A + \ma B)^T = \ma A^T + \ma B^T$ & $(\ma A \cdot \ma B)^T = \ma B^T \cdot \ma A^T$\\
-${(\ma A^T)}^{-1} = {(\ma A^{-1})}^T$ & $(\ma A\ma B)^{-1} = \ma B^{-1}\ma A^{-1}$
-\end{tabularx}
+	\subsection[Matrizen]{Matrizen $\ma A \in\mathbb{K}^{m \times n}$}
+	\begin{tabularx}{\columnwidth}{LX}
+	$(\ma A + \ma B)^\top = \ma A^\top + \ma B^\top$ & $(\ma A \cdot \ma B)^\top = \ma B^\top \cdot \ma A^\top$\\
+	${(\ma A^\top)}^{-1} = {(\ma A^{-1})}^\top$ & $(\ma A \cdot \ma B)^{-1} = \ma B^{-1}\ma A^{-1}$
+	\end{tabularx}
 
-\subsubsection{Dimensionen $A \in\mathbb{K}^{m\times n}$}
-\begin{tabularx}{\columnwidth}{LX}
-$\rang\ma A = \rang\ma A^T$ & \\
-$n = \rang\ma A + \dim\ker\ma A$ & $m = \rang\ma A^T + \dim\ker\ma A^T$
-\end{tabularx}
+	\subsubsection{Dimensionen}
 
-\subsubsection{Spezielle Matrizen $A \in\mathbb{K}^{m\times n}$}
-\begin{tabularx}{\columnwidth}{LlXX@{}}
-Symmetrisch & $\ma A = \ma A^T$ & Schiefsymmetrisch & $\ma A = -\ma A^T$\\
-Orthogonal & $\ma A\ma A^T = \ma I$ & $\det(\ma A) = \pm 1$ & $\ma A^{-1} = \ma A^T$
-\end{tabularx}
+	\begin{tablebox}{ll}
+	Bildraum & Nullraum \\ \mrule
+	$\Bild \ma A = \iset{\ma A \vec x}{\vec x \in \K^n }$ & $\ker\ma A = \iset{\vec x \in \K^n}{\ma A \vec x = \vec 0}$\\
+	$\rang \ma A = \dim(\Bild \ma A)$ & $\defect \ma A = \dim(\ker \ma A)$\\
+	\end{tablebox}
+	$\rang \ma A = r$ ist Anzahl. lin. unab. Spaltenvektoren.\\
+	$\ma A$ erzeugt $\mathbb K \Leftrightarrow r = n$ \qquad $\ma A$ ist Basis von $\mathbb K \Leftrightarrow r = n = m$\\
+	$\dim \mathbb K = n = \rang\ma A + \dim\ker\ma A$ \qquad $\rang\ma A = \rang\ma A^\top$
 
-\subsubsection{Determinante von $A\in \mathbb K^{n\times n}$: $\det(A)=|A|$}
-$\det\begin{pmatrix}\ma A & \ma 0\\ \ma C&\ma D\end{pmatrix}=\det\begin{pmatrix}\ma A&\ma B\\\ma 0&\ma D\end{pmatrix}=\det(\ma A)\cdot\det(\ma D)$ \\
-\begin{tabular*}{\columnwidth}{@{\extracolsep\fill}ll}
-$\det(\ma A) = \det(\ma A^T)$ & $\det(\ma A^{-1}) = \det(\ma A)^{-1}$
-\end{tabular*}
-$\det(\ma A\ma B) = \det(\ma A)\det(\ma B) = \det(\ma B)\det(\ma A) = \det(\ma B\ma A)$\\
-Hat $\ma A$ 2 linear abhäng. Zeilen/Spalten $\Rightarrow |\ma A|=0$ \\
-Entwicklung. n. $i$ter Zeile: $|\ma A|=\sum\limits_{i=1}^n (-1)^{i+j} \cdot a_{ij} \cdot |\ma A_{ij}|$\\
-Inverse $2\times 2$: \quad $\mat{a & b\\ c & d}^{-1} = \frac{1}{ad-bc} \mat{d & -b\\ -c& a}$
 
+
+	\subsubsection{Quadratische Matrizen $A \in \mathbb{K}^{n \times n}$}
+	regulär/invertierbar/nicht-singulär $\Leftrightarrow \det (\ma A) \ne 0 \Leftrightarrow \rang\ma A = n$\\
+	singulär/nicht-invertierbar $\Leftrightarrow \det (\ma A) = 0 \Leftrightarrow \rang\ma A \ne n$\\
+	orthogonal $\Leftrightarrow \ma A^\top=\ma A^{-1} \Ra \det(\ma A) = \pm 1$\\
+	symmetrisch: $\ma A=\ma A^\top$ \qquad schiefsymmetrisch: $\ma A=-\ma A^\top$
+	%\item hermitsch: $\ma A=\overline{\ma A}^\top$, unitär:$\ma A^{-1} = \overline{\ma A}^\top$
+	
+
+	\subsubsection[Determinante]{Determinante von $\ma A\in \mathbb K^{n\times n}$: $\det(\ma A)=|\ma A|$}
+	$\det\mat{ \ma A & \ma 0 \\ \ma C& \ma D }= \det\mat{ \ma A & \ma B \\ \ma 0 & \ma D } = \det(\ma A)\det(\ma D)$ \\
+	\begin{tabular*}{\columnwidth}{@{\extracolsep\fill}ll}
+	$\det(\ma A) = \det(\ma A^T)$ & $\det(\ma A^{-1}) = \det(\ma A)^{-1}$
+	\end{tabular*}
+	$\det(\ma A\ma B) = \det(\ma A)\det(\ma B) = \det(\ma B)\det(\ma A) = \det(\ma B\ma A)$\\
+	Hat $\ma A$ 2 linear abhäng. Zeilen/Spalten $\Rightarrow |\ma A|=0$ \\
+	Entwicklung. n. $j$ter Zeile: $|\ma A|=\sum\limits_{i=1}^n (-1)^{i+j} \cdot a_{ij} \cdot |\ma A_{ij}|$\\
+
+	\subsubsection{Eigenwerte $\lambda$ und Eigenvektoren $\underline v$}
+	\framebox[\columnwidth]{\large $\ma A \vec v = \lambda \vec v$ \qquad $\det \ma A = \prod \lambda_i$ \qquad $\Sp \ma A = \sum a_{ii} = \sum \lambda_i$}\\
+	Eigenwerte: $\det(\ma A - \lambda \ma 1) = 0$ Eigenvektoren: $\ker(\ma A - \lambda_i \ma 1) = \vec v_i$\\
+	EW von Dreieck/Diagonal Matrizen sind die Elem. der Hauptdiagonale.
+
+
+	\subsubsection{Spezialfall $2 \times 2$ Matrix $A$}
+	\parbox{3cm}{ $\det(\ma A) = ad-bc$ \\ $\Sp(\ma A) = a+d$ } $\mat{a & b\\ c & d}^{-1} = \frac{1}{\det \ma A} \mat{d & -b\\ -c& a}$\\
+	$\lambda_{1/2} = \frac{\Sp \ma A}{2} \pm \sqrt{ \left( \frac{\mathrm{sp} \ma A}{2} \right)^2 - \det \ma A }$
+
+
+	\subsubsection{Spezielle Matrizen}
+	Diagonalmatrix $\ma D$:  $\det \ma D = \prod d_{i}$\\
+	$\ma D^{-1} =\operatorname{diag} \left(d_1, \dots, d_n\right)^{-1} = \operatorname{diag} \left(d_1^{-1}, \dots, d_n^{-1}\right)$\\
 \end{sectionbox}
 
 
@@ -187,34 +212,31 @@ Inverse $2\times 2$: \quad $\mat{a & b\\ c & d}^{-1} = \frac{1}{ad-bc} \mat{d & 
 	Definition: Zahl, die die „Größe“ eines Objekts $\mathcal X$ beschreibt.\\
 	Jede Norm muss folgende 3 Axiome erfüllen::
 	\begin{enumerate}
-		\item Definitheit: $\norm{\mathcal X} = 0 \Ra \mathcal X = 0$
+		\item Definitheit: $\norm{\mathcal X} \ge 0$ mit $\norm{\mathcal X} = 0 \Leftrightarrow \mathcal X = 0$
 		\item absolute Homogenität:	$\norm{\alpha\cdot \mathcal X} = |\alpha| \cdot \norm{\mathcal X}$ \qquad ($\alpha$ ist skalar)
 		\item Dreiecksungleichung: $\norm{\mathcal X + \mathcal Y} \leq \norm{\mathcal X} + \norm{\mathcal Y}$
 	\end{enumerate}
 
-		\subsubsection{Vektornormen:}
-		\begin{tablebox}{ll}
-			Summennorm & $\norm{\vec x}_1 = \sum\limits_{i=1}^n |x_i|$\\
-			Euklidische Norm & $\norm{\vec x}_2 = \sqrt{\sum\limits_{i=1}^n |x_i|^2}$\\
-			Maximumnorm & $\norm{\vec x}_\infty = \max\limits_{i=1,...,n} |x_i|$\\
-			Alg. p-Norm & $\norm{\vec x}_p = \left( \sum\limits_{i=1}^n |x_i|^p \right)^{1/p}$
+		\subsubsection[Vektornormen]{Vektornormen: ($\vec x \in \K^n, \sum$ von $i=0$ bis $n$)}
+		\begin{tablebox}{l@{\ }ll@{\ }l}
+			Summen & $\norm{\vec x}_1 = \sum |x_i|$ & Euklidische & $\norm{\vec x}_2 = \sqrt{\sum |x_i|^2}$\\
+			Maximum & $\norm{\vec x}_\infty = \max |x_i|$ & Alg. p-Norm & $\norm{\vec x}_p = \left( \sum |x_i|^p \right)^{1\!/\!p}$\\		
 		\end{tablebox}
 
 
-	\subsubsection{Matrixnormen}
+	\subsubsection[Matrixnormen]{Matrixnormen ($\ma A \in \K^{m \times n}, i\in[0,m], j\in[0,n]$)}
 	Für Matrixnormen gilt zu den 3 Standard Axiomen zusätzlich:
 	\begin{enumerate} \setcounter{enumi}{3}
 		\item Submultiplikativität: $\norm{\ma A + \ma B} \leq \norm{\ma A} \cdot \norm{\ma B}$
 	\end{enumerate}
 
 	\begin{tablebox}{lr@{ = }l}
-	Gesamtnorm, Matrixnorm & $\norm{\ma{A}}_M$ & $n\cdot\underset{i,j}{\max}\abs{a_{ij}}$\\
+	Gesamtnorm $\left(\norm{\ma{A}}_M = \frac{\norm{\ma{A}}_G}{\sqrt{mn}}\right)$ & $\norm{\ma{A}}_G$ & $\sqrt{mn}\cdot\underset{i,j}{\max}\abs{a_{ij}}$\\
 	Zeilennorm (max Zeilensumme) & $\norm{\ma{A}}_\infty$ & $\underset{i}{\max}\sum\limits_{j=1}^n\abs{a_{ij}}$ \\
 	Spaltennorm (max Spaltensumme) & $\norm{\ma{A}}_1$ & $\underset{j}{\max}\sum\limits_{i=1}^n\abs{a_{ij}}$ \\
 	$\underset{\text{euklidische Norm}}{\text{Frobeniusnorm}}$ $(||\ma{I}||_E = \sqrt{n})$ & $\norm{\ma{A}}_E$ & $\sqrt{\sum\limits_{i=1}\sum\limits_{j=1}\abs{a_{ij}}^2}$\\
 	Spektralnorm, Hilbertnorm & $\norm{\ma{A}}_\lambda$ & $\sqrt{\lambda_\text{max}(\ma{A}^\top\cdot\ma{A})}$\\
 	\end{tablebox}
-
 \end{sectionbox}
 
 
@@ -290,7 +312,7 @@ $\tan$ & $0$ & $\frac{\sqrt{3}}{3}$ &	$1$	&	$\sqrt{3}$ & $\pm \infty$ & $0$ & $\
 		$F(x)$ & $f(x)$ & $f'(x)$ \\ \cmrule
 		$\frac{1}{q+1}x^{q+1}$ & $x^q$ & $qx^{q-1}$ \\
 		\raisebox{-0.2em}{$\frac{2\sqrt{ax^3}}{3}$} & $\sqrt{ax}$ & \raisebox{0.2em}{$\frac{a}{2\sqrt{ax}}$}\\
-		$x\ln(ax) -x$ & $\ln(ax)$ & $\textstyle \frac{a}{x}$\\
+		$x\ln(ax) -x$ & $\ln(ax)$ & $\textstyle \frac{1}{x}$\\
 		$\frac{1}{a^2} e^{ax}(ax- 1)$ & $x \cdot e^{ax}$ & $e^{ax}(ax+1)$ \\
 		$\frac{a^x}{\ln(a)}$ & $a^x$ & $a^x \ln(a)$ \\
 		$-\cos(x)$ & $\sin(x)$ & $\cos(x)$\\
@@ -321,8 +343,20 @@ $\underset{\text{Harmonische Reihe}}{\sum\limits_{n=1}^\infty \frac{1}{n} \ra \i
 \section{Lösung nichtlinearer Gleichungen}
 % =============================================================================================================00
 Exakte Lösung $x*$, Fehler $\epsilon=x-x*$
+
+
+\begin{sectionbox}
+	\subsection{Iterationsverfahren (Nullstellensuche)}
+	Problem: $f(x) = 0, f(x)$ stetig in $[a,b]$ und $f(a) \cdot f(b) < 0$\\
+	Gesucht: $x^*:f(x^*)=0, a \le x^* \le b$
+
+	Konvergenz: $ε^{(k+1)} = \frac{1}{2} ε^{(k)} = \left( \frac12 \right)^{k+1} ε^{(0)} $\\
+	Iterationsschritte bis $ε < τ$: $k = \ceil{\ld\left(\frac{ε^{(0)}}{τ}\right)}$
+\end{sectionbox}
+
 \begin{sectionbox}
 \subsection{Fixpunktiteration}
+NST-Problem als FP-Problem: $x = F(x) + x$ 
 \begin{equation*}
 	x^{(k + 1)} = \Phi(x^{(k)})
 \end{equation*}
@@ -340,13 +374,13 @@ Falls $\Phi'(x^\star) = 0$ und $\Phi''(x^\star) \ne 0 \Rightarrow$ quadratische 
 
 \begin{sectionbox}
 \subsection{Newton-Raphson}
-	Funktion durch Gerade annähern und Nullstelle bestimmen. An dieser Stelle den Vorgang wiederholen.\\
+	Funktion durch Gerade annähern und Nullstelle bestimmen. An dieser Stelle den Vorgang wiederholen. Nur lokale Konvergenz\\
 \textbf{Ausgangsproblem:}
 \begin{equation*}
 	f(x) = 0
 \end{equation*}
 \begin{equation*}
-	x^{(k + 1)} = x^{(k)} - \frac{f(x^{(k)})}{f'(x^{(k)})}
+	x^{(k + 1)} = x^{(k)} - \frac{f(x^{(k)})}{f'(x^{(k)})}  =: Φ\left(x^{(k)}\right)
 \end{equation*}
 
 \subsubsection{Konvergenz}
@@ -376,7 +410,13 @@ Falls die Auswertung von $f'(x)$ vermieden werden soll:
 \end{equation*}
 \end{sectionbox}
 
+
+
+
+
+
 \section{Lösung linearer Gleichungssysteme}
+% ==========================================================================================================
 \begin{sectionbox}
 \textbf{Ausgangsproblem:}
 \begin{equation*}
@@ -388,11 +428,13 @@ Falls die Auswertung von $f'(x)$ vermieden werden soll:
 		$\ma{L}$ & Linke untere Dreiecksmatrix \texttt{tril(}$\ma{A},-1$\texttt{)}\\
 		$\ma{U}$ & Rechte obere Dreiecksmatrix \texttt{triu(}$\ma{A},1$\texttt{)}\\
 \end{tablebox}
+$\ma A = \ma D + \ma L + \ma U$, keine LR-Zerlegung!
 \end{sectionbox}
 
 \begin{sectionbox}
 \subsection{Jacobi-Verfahren}
 Konvergiert falls $\rho(\ma{K}_j) < 1$ oder falls $\ma{A}$ strikt diagonaldominant\\
+Spektralradius $\rho(\ma{K}_j) = \max |\lambda_i(\ma A)|$ mit $\lambda_i$ EW.
 \begin{equation*}
 	\ma{K}_j = \ma{D}^{-1} (- \ma{L} - \ma{U})
 \end{equation*}
@@ -475,24 +517,14 @@ Optimierung: $\vec{r}^{(k+1)} = \vec{r}^{(k)} - \alpha^{(k)} \ma A \vec{r}^{(k)}
 \end{equation*}
 \end{sectionbox}
 
+
+% ======================================================================================
 \section{Matrix Zerlegung}
+% ======================================================================================
 \begin{sectionbox}
 	\subsection{LR-Zerlegung von Matrizen (\textbf{L}ower and \textbf{U}pper)}
 Geeignetes Lösungsverfahren für $\ma A \vec x = \vec b$, falls $n < 500$\\
 $\ma A = \ma L \cdot \ma R$ \quad mit $\ma R$ obere Dreiecksmatrix ($\rang \ma A = \rang\ma R$)\\
-\begin{cookbox}{Gaußverfahren durch Matrixmultiplikaiton}
-	\item Zerlegen des Problems $\ma A \vec x = \vec b$ in das Problem $\ma L (\ma R \vec x) = \vec b$  mit $\ma A = \ma L \ma R$ bzw. $\ma L \vec y = \ma P \vec b$ (mit Pivotisierung)
-	\item Zerlegungsmatrix (für $2 \times 2$): \\ $\ma A = \mat{a & b \\ c & d} \ra \mat{a & b \\ \frac{c}{a} & d - \frac{c}{a} b} = \ma A^*$ mit den Eliminationsfaktoren $l_{ik} = \frac{a_{ik}}{a_{kk}} \overset{z.B.}{=} \frac{c}{a}$
-	\item Für jede Spalte der unteren Dreiecksmatrix wiederholen.\\
-		 Für eine $3 \times 3$ Matrix bräuchte man 2 Durchläufe, da 3 Spalten Elimationsfaktoren bestimmt werden müssen.
-	\item $\ma R = \texttt{triu}(\ma A^*)$\\
-	 (obere Dreiecksmatrix von $\ma A^*$, inkl. Diagonalelemente)
-	\item $\ma L = \texttt{tril}(\ma A^*,-1)+\ma 1$\\
-	 (untere Dreiecksmatrix mit $1$en auf der Diagonale.
-	\item \textbf{Vorwärtseinsetzen:} $\ma L \vec y = \vec b$ bzw. $\ma L \vec y = \ma P \vec b$ (mit Pivotisierung)\quad (Löse nach $\vec y$)
-	\item \textbf{Rückwärtseinsetzen:} $\ma R \vec x = \vec y$ \quad (Löse nach $\vec x$)
-
-\end{cookbox}
 
 	\subsubsection{Pivotisierung (Spaltenpivotsuche)}
 	Permutationsmatrix $\ma P^\top = \ma P^{-1}$ vertauscht Zeilen, damit LR Zerlegung bei 0 Einträgen möglich ist.
@@ -505,6 +537,23 @@ $\ma A = \ma L \cdot \ma R$ \quad mit $\ma R$ obere Dreiecksmatrix ($\rang \ma A
 			Rückwärtseinsetzen & $n^2$\\
 	\end{tablebox}
 \end{sectionbox}
+
+\begin{sectionbox}
+\begin{cookbox}{LR-Zerlegung mit Gaußverfahren}
+	\item Zerlegen des Problems $\ma A \vec x = \vec b$ in das Problem $\ma L (\ma R \vec x) = \vec b$  mit $\ma A = \ma L \ma R$ bzw. $\ma L \vec y = \ma P \vec b$ (mit Pivotisierung)
+	\item Zerlegungsmatrix (für $2 \times 2$): \\ $\ma A = \mat{a & b \\ c & d} \ra \mat{a & b \\ \frac{c}{a} & d - \frac{c}{a} b} = \ma A^*$ mit den Eliminationsfaktoren $l_{ik} = \frac{a_{ik}}{a_{kk}} \overset{z.B.}{=} \frac{c}{a}$
+	\item Für jede Spalte der unteren Dreiecksmatrix wiederholen.\\
+		 Für eine $3 \times 3$ Matrix bräuchte man 2 Durchläufe, da 3 Spalten Elimationsfaktoren bestimmt werden müssen.
+	\item $\ma R = \texttt{triu}(\ma A^*)$\\
+	 (obere Dreiecksmatrix von $\ma A^*$, inkl. Diagonalelemente)
+	\item $\ma L = \texttt{tril}(\ma A^*,-1)+\ma 1$\\
+	 (untere Dreiecksmatrix mit $1$en auf der Diagonale.
+	\item \textbf{Vorwärtseinsetzen:} $\ma L \vec y = \vec b$ bzw. $\ma L \vec y = \ma P \vec b$ (mit Pivotisierung)\quad (Löse nach $\vec y$)
+	\item \textbf{Rückwärtseinsetzen:} $\ma R \vec x = \vec y$ \quad (Löse nach $\vec x$)
+
+\end{cookbox}
+\end{sectionbox}
+
 
 \begin{sectionbox}
 		\subsection{QR-Zerlegung (existiert immer)}
@@ -520,27 +569,38 @@ $\ma A = \ma L \cdot \ma R$ \quad mit $\ma R$ obere Dreiecksmatrix ($\rang \ma A
 \begin{sectionbox}
 	\begin{cookbox}{QR-Zerlegung mit Householder-Transformation für $\ma A \in \mathbb R^{m\times n }$}
 		\item Setze $\vec a = \vec s_1$ (erste Spalte) und $\vec v = \vec a + \sgn ( a_1) \norm{\vec a} \vec e_1$
-		\item Konstruiere die \emph{Householder}-Transformationsmatrix mit \\
-		$\ma H_v = \ma E_m - \frac{2}{\vec v^\top \vec v} \vec v \vec v^\top$
-		\item Erhalte die Matrix $\ma H_v \ma A$ die in der ersten Spalte bis auf das Element $a_{11}$ nur Nullen enthält
-		\item Setze $\ma Q_1 = \ma H_v$
-		\item Wende den gleichen Algorithmus auf die Untermatrix $\ma A^*$ ($\ma H_v \ma A$ ohne erste Zeile und Spalte) an.
-		\item Setze anschließend $\ma Q_2 = \ma H_v$ und fülle mit erweitere mit $E_m$ (d.h. erste Zeile und Spalte die von $E_m$)
-		\item Nach $p = \min \eset{m - 1, n}$ Schritten: $\ma H_v \ma A^*$ ist obere Dreiecksmatrix
-		\item Somit ist mit $\ma Q^\top = \ma Q_p \cdots \ma Q_1$ ist $\ma Q^\top \ma A = \ma R$ und $\ma A = \ma Q \ma R$
+		\item Berechne \emph{Householder}-Trafomatrix $\ma H_{\vec v_1} = \ma 1_m - \frac{2}{\vec v^\top \vec v} \vec v \vec v^\top$
+		\item Erhalte $\ma A^* = \ma H_{\vec v_1} \ma A$ (ersten Spalte bis auf $a_{11}$ nur Nullen)
+		\item Wiederhole für $\ma A^*$ ohne 1. Zeile und Spalte (Untermatr. $\ma A^*_{11}$)\\
+			Erweitere $\ma H^*_{\vec v_2}$ oben mit $\ma 1_m$ zu $\ma H_{\vec v_2}$ ($h_{11} = 1$)
+		\item Nach $p = \min \eset{m - 1, n}$ Schritten: $\ma H_{\vec v_p} \ma A^* = \ma R$ weil
+		\item $\ma Q^\top = \ma H_{\vec v_p} \cdots \ma H_{\vec v_1}$ und  $\ma Q^\top \ma A = \ma R$
 	\end{cookbox}
 \end{sectionbox}
 
+
 \begin{sectionbox}
+	\subsection{Orthogonalisierungsverfahren nach Gram-Schmidt}
+	Berechnet zu $n$ Vektoren $\vec v_i$ ein Orthogonalsystem $\vec b_i$\quad ($i \in [1;n])$
+	\begin{equation*}
+		\vec b_1 = \vec v_1 \qquad\qquad \vec b_i = \vec v_i - \sum\limits_{k=1}^{i-1} \frac{\vec b_k^\top \bdot \vec v_i}{\vec b_k^\top \bdot \vec b_k} \vec b_k
+	\end{equation*}
+	Erhalte Ortho\textbf{normal}system durch $\vec b_i' = \vec b_i/\norm{\vec b_i}$\\
+	QR-Zerlegung: $\ma A = \ma Q \ma R$ mit $\ma Q = \big[\vec b_1', ... , \vec b_n'\big]$ \quad $\ma R = \ma Q^\top \ma A$
+\end{sectionbox}
+
+
+
+\begin{sectionbox}
+	\subsection[Givens Rotation (Jacobi-Rotation)]{Givens Rotation (Jacobi-Rotation) \quad $\ma G^{-1} = \ma G^\top$}
+	Die orthogonale Givens-Rotationsmatrix $\ma G$ entspricht der Einheitsmatrix wobei 4 Elemente die Form $\mat{c & s \\ -s & c}$ haben. Die $c$ beliebig auf der Hauptdiagonalen und $s/\!-\!s$ in der gleichen Zeile/Spalte wie die $c$.
+
 	\begin{cookbox}{QR-Zerlegung mit Givens-Rotation für $\ma A \in \mathbb R^{m\times n }$}
-		\item Setze $\ma R = \ma A$
-		\item Setze $\ma G_\text{gesamt} = \ma E_m$
-		\item Wiederhole folgende Schritte für alle Elemente in $\ma R$, welche $0$ werden sollen (in Reihe $x$ und Spalte $y$), spaltenweise von links nach rechts und in jeder Spalte von unten nach oben
-		\item Setze $a$ auf Wert des aktuellen Hauptdiagonalelements
-		\item Setze $b$ auf Wert, welcher durch $0$ ersetzt werden soll
-		\item $p = \sqrt{a^2 + b^2}$
-		\item $c = \frac{a}{p}$
-		\item $s = \frac{b}{p}$
+		\item Initialisierung: Setze $\ma R = \ma A$ und $\ma G_\text{gesamt} = \ma 1_m$
+		\item Wiederhole folgende Schritte für alle Elemente $r_{xy}$ in $\ma R$, welche $0$ werden müssen um obere Dreiecksmatrix zu erhalten. (Reihe $x$, Spalte $y$), verfahre spaltenweise (links nach rechts) und in jeder Spalte von oben nach unten:
+		\item Setze $a = r_{yy}$ (Hauptdiagonalelement in dieser Spalte)
+		\item Setze $b = r_{xy}$ (Wert, welcher durch $0$ ersetzt werden soll)
+		\item Berechne $c := \frac{a}{p}$ und $s := \frac{b}{p}$ mit $p := \sqrt{a^2 + b^2}$
 		\item Setze $\ma G = (g_{ij}) =
 						\begin{cases}
 							c & i = x, j = x \\
@@ -549,24 +609,23 @@ $\ma A = \ma L \cdot \ma R$ \quad mit $\ma R$ obere Dreiecksmatrix ($\rang \ma A
 							-s & i = x, j = y \\
 							\text{Einheitsmatrix} & \text{sonst}
 						\end{cases}$
-		\item Setze $\ma G_\text{gesamt} = \ma G \ma G_\text{gesamt}$
-		\item Setze $\ma R = \ma G \ma R$
+		\item Setze $\ma R = \ma G \ma R$ und $\ma G_\text{gesamt} = \ma G \ma G_\text{gesamt}$
 		\item Fahre, falls nötig, mit nächstem Element in $\ma R$ fort
-		\item Setze $\ma Q = \ma G_\text{gesamt}^T$
+		\item Erhalte $\ma Q = \ma G_\text{gesamt}^\top$ \quad Löse 
 	\end{cookbox}
 \end{sectionbox}
 
 \begin{sectionbox}
 \subsection{Dünnbesetzte Matrizen}
-\textbf{Ziel:} effizienteres Speichern von Matrizen mit vielen 0 Einträgen.
-\begin{equation*}
+\parbox{3cm}{\textbf{Ziel:} effizienteres Speichern von Matrizen mit vielen 0 Einträgen.} \qquad
+$
 \ma A = \begin{bmatrix}
 a & 0 & 0 & 0\\
 0 & b & c & 0\\
 0 & 0 & 0 & d\\
 e & 0 & f & 0
 \end{bmatrix}
-\end{equation*}
+$
 
 \begin{tablebox}{@{}lccc}
 				& \textbf{COO} 		& \textbf{CRS} 		& \textbf{CCS}		\\
@@ -584,7 +643,10 @@ e & 0 & f & 0
 \end{tabularx}
 \end{sectionbox}
 
+
+% ======================================================================================
 \section{Numerische Differentiation}
+% ======================================================================================
 \begin{sectionbox}
 \subsection{Vorwärtsdifferenz}
 \begin{equation*}
@@ -612,7 +674,10 @@ e & 0 & f & 0
 	$h_{opt} = \sqrt[3]{\frac{3\epsilon}{M}}$ \qquad Max. Rundungsfehler $\epsilon$
 \end{sectionbox}
 
+
+% ======================================================================================
 \section{Numerische Integration}
+% ======================================================================================
 \begin{sectionbox}
 \subsection{Polynom-Ansätze}
 \begin{equation*}
@@ -678,19 +743,22 @@ falls $n = 3$:
 \end{sectionbox}
 
 \begin{sectionbox}
-\subsection{Kubische Splines}
-\begin{equation*}
-	S_j(x) = a_j + b_j (x-x_j) + c_j (x-x_j)^2 + d_j (x-x_j)^3
-\end{equation*}
+\subsection{Kubische Splines $S(x)$}
+Stückweise Approximation von $f(x)$ durch $n$ kubische Polynome mit $S(x_i) = f(x_i)$\\
+Bestimme Parameter $a,b,c,d$ für jedes Teilstück:
+\begin{align*}
+		S_j(x) &= a_j + b_j (x-x_j) + c_j (x-x_j)^2 + d_j (x-x_j)^3\\
+		S_j'(x) &= b_j+ 2c_j (x-x_j) + 3d_j (x-x_j)^2
+\end{align*}
 Für $j=0,1,\ldots,n-1$:
 \begin{equation*}
 	S_j(x_j) = f(x_j) \wedge S_j(x_{j+1}) = f(x_{j+1})
 \end{equation*}
 Für $j=0,1,\ldots,n-2$:
 \begin{align*}
-	S_j(x_{j+1}) &= S_{j+1}(x_{j+1})\\
-	S_{j+1}'(x_{j+1}) &= S_j'(x_{j+1})\\
-	S_{j+1}''(x_{j+1}) &= S_j''(x_{j+1})
+	S_j(x_{j+1}) &\stackrel{!}{=} S_{j+1}(x_{j+1}) ≡ a_{j+1}\\
+	S_j'(x_{j+1}) &\stackrel{!}{=} S_{j+1}'(x_{j+1}) ≡ b_{j+1} \\
+	S_j''(x_{j+1}) &\stackrel{!}{=} S_{j+1}''(x_{j+1}) ≡ 2c_{j+1}
 \end{align*}
 Freier bzw. natürlicher Rand:
 \begin{equation*}
@@ -722,7 +790,41 @@ $\vec l = \begin{bmatrix}
 \end{cookbox}
 \end{sectionbox}
 
+\vfill
+
+% ======================================================================================
 \section{Least Squares}
+% ======================================================================================
+\begin{sectionbox}
+	\subsection{Ausgleichsrechnung}
+	Gegeben: $n$ Datenpunkte $(x_i,y_i)$, Gesucht: Eine Polynom-Funktion $f$ welche die Datenpunkte möglichst gut (kleinstes Fehlerquadrat) approximiert.
+	Es gilt: $\vec f_{\vec \alpha}(\vec x) = \vec y + \vec r \approx \vec y$ mit Residum $\vec r$\\
+	Bestimme $k$ Parameter $\alpha_j$ so, dass Fehlerquadrat $\vec r^\top\vec r$ minimiert wird.\\
+	Erstelle $\ma A \in \R^{n \times k}$ mit $\ma A \vec \alpha \approx \vec f(\vec x)$, Zeilen aus $k$ $x$-Termen: $x^2,x,1$\\
+	$\min\limits_\alpha \vec r = \min\limits_\alpha \norm{\ma A \vec \alpha - \vec y}_2^2 = \min\limits_\alpha \norm{\vec y - \ma A \vec \alpha}_2^2$\\
+	Minimierung durch Ableitung: $\forall j\in[1,k]:\frac{\partial (\vec r)^2}{\partial \alpha_j} \stackrel{!}{=} 0$\\
+	Dadurch ergibt sich: $\ma A^\top \ma A \vec \alpha = \ma A^\top \vec y$
+	\begin{cookbox}{Lösen der Normalengleichung}
+		\item Bestimme eine reduzierte QR-Zerlegung \\ $\ma A = \tilde{\ma Q}  \tilde{\ma R}$ mit $\tilde{\ma Q} \in \mathbb R^{n \times k}, \tilde{\ma R} \in \mathbb R^{k \times k}$
+		\item Löse $\tilde{\ma R } \vec x =\tilde{\ma Q}^\top \vec y$
+	\end{cookbox}
+
+	\subsubsection{Lineare Ausgleichsrechnung ($k=2$)}
+	$f_{\vec \alpha}(x) = \alpha_1 x + \alpha_0$  \qquad $\ma A = [\vec x \quad \vec 1]$ \quad $\vec \alpha = \mat{α_1 \\ α_0}$
+	\begin{equation*}
+		\argmin_{α_1, α_0} E(α_1, α_0) = \sum_{i = 1}^n \left( y_i - (α_1 x_i + α_0) \right)^2
+	\end{equation*}
+
+	\subsubsection{Polynomial Least Squares}
+	\begin{equation*}
+		f_{\vec \alpha}(x) = P(x, \vec \alpha) = a_k x^k + \ldots + a_1 x + a_0
+	\end{equation*}
+	\begin{equation*}
+		\argmin_{\alpha_0, \ldots, \alpha_k} E_k(\alpha_0, \ldots, \alpha_k) = \sum_{i = 1}^k \left( y_i - P(x_i) \right)^2
+	\end{equation*}	
+	Minimierung durch Ableitung: $\forall i\in[0,n]:\frac{\partial E_n}{\partial a_i} \stackrel{!}{=} 0$
+\end{sectionbox}
+
 \begin{sectionbox}
 \subsection{Anwendung in der linearen Ausgleichsrechnung}
 (Minimierung d. Restes)\\
@@ -734,25 +836,11 @@ Problem: $\ma A^\top \ma A \vec x = \ma A^\top \vec b$ mit $\ma A \in \mathbb R^
 $\norm{\vec b - \ma A \vec x}^2 = \norm{\ma Q^\top (\vec b - \ma A \vec x)}^2 = \norm{\tilde{\vec b} - \tilde{\ma R} \vec x}^2 + \norm{\vec c}^2 \ge \norm{\vec c^2}$
 \end{sectionbox}
 
-\begin{sectionbox}
-\subsection{Linear Least Squares}
-\begin{equation*}
-	y = a x + b
-\end{equation*}
-\begin{equation*}
-	\argmin_{a, b} E(a, b) = \sum_{i = 1}^n \left( y_i - (a x_i + b) \right)^2
-\end{equation*}
+\vfill
 
-\subsection{Polynomial Least Squares}
-\begin{equation*}
-	P(x) = a_n x^n + \ldots + a_1 x + a_0
-\end{equation*}
-\begin{equation*}
-	\argmin_{a_0, \ldots, a_n} E_n(a_0, \ldots, a_n) = \sum_{i = 1}^n \left( y_i - P(x_i) \right)^2
-\end{equation*}
-\end{sectionbox}
-
+% ======================================================================================
 \section{Numerische Lösung von Differentialgleichungen}
+% ======================================================================================
 \begin{sectionbox}
 \textbf{Ausgangsproblem:}
 \begin{equation*}
@@ -769,7 +857,7 @@ $\norm{\vec b - \ma A \vec x}^2 = \norm{\ma Q^\top (\vec b - \ma A \vec x)}^2 = 
 \begin{equation*}
 	\hat{x}(\nu + 1) = \hat{x}(\nu) + \Delta t \hat{f}(\nu)
 \end{equation*}
-
+stabil für $0 < Δt < 2$, instabil für $Δt >$ 
 \subsection{Impliziter Euler}
 \begin{equation*}
 	\hat{x}(\nu + 1) = \hat{x}(\nu) + \Delta t \hat{f}(\nu + 1)
@@ -1053,9 +1141,9 @@ end
 
 
 
-\begin{sectionbox}
-	\subsection{}
-\end{sectionbox}
+
+
+
 
 
 
@@ -1066,7 +1154,105 @@ end
 
 
 
+\begin{sectionbox}
+	\subsection[Matrizen]{Matrizen $\ma A \in\mathbb{K}^{m \times n}$}
+	\begin{tabularx}{\columnwidth}{LX}
+	$(\ma A + \ma B)^\top = \ma A^\top + \ma B^\top$ & $(\ma A \cdot \ma B)^\top = \ma B^\top \cdot \ma A^\top$\\
+	${(\ma A^\top)}^{-1} = {(\ma A^{-1})}^\top$ & $(\ma A \cdot \ma B)^{-1} = \ma B^{-1}\ma A^{-1}$
+	\end{tabularx}
 
+	\subsubsection{Dimensionen}
+
+	\begin{tablebox}{ll}
+	Bildraum & Nullraum \\ \mrule
+	$\Bild \ma A = \iset{\ma A \vec x}{\vec x \in \K^n }$ & $\ker\ma A = \iset{\vec x \in \K^n}{\ma A \vec x = \vec 0}$\\
+	$\rang \ma A = \dim(\Bild \ma A)$ & $\defect \ma A = \dim(\ker \ma A)$\\
+	\end{tablebox}
+	$\rang \ma A = r$ ist Anzahl. lin. unab. Spaltenvektoren.\\
+	$\ma A$ erzeugt $\mathbb K \Leftrightarrow r = n$ \qquad $\ma A$ ist Basis von $\mathbb K \Leftrightarrow r = n = m$\\
+	$\dim \mathbb K = n = \rang\ma A + \dim\ker\ma A$ \qquad $\rang\ma A = \rang\ma A^\top$
+
+
+
+	\subsubsection{Quadratische Matrizen $A \in \mathbb{K}^{n \times n}$}
+	regulär/invertierbar/nicht-singulär $\Leftrightarrow \det (\ma A) \ne 0 \Leftrightarrow \rang\ma A = n$\\
+	singulär/nicht-invertierbar $\Leftrightarrow \det (\ma A) = 0 \Leftrightarrow \rang\ma A \ne n$\\
+	orthogonal $\Leftrightarrow \ma A^\top=\ma A^{-1} \Ra \det(\ma A) = \pm 1$\\
+	symmetrisch: $\ma A=\ma A^\top$ \qquad schiefsymmetrisch: $\ma A=-\ma A^\top$
+	%\item hermitsch: $\ma A=\overline{\ma A}^\top$, unitär:$\ma A^{-1} = \overline{\ma A}^\top$
+	
+
+	\subsubsection[Determinante]{Determinante von $\ma A\in \mathbb K^{n\times n}$: $\det(\ma A)=|\ma A|$}
+	$\det\mat{ \ma A & \ma 0 \\ \ma C& \ma D }= \det\mat{ \ma A & \ma B \\ \ma 0 & \ma D } = \det(\ma A)\det(\ma D)$ \\
+	\begin{tabular*}{\columnwidth}{@{\extracolsep\fill}ll}
+	$\det(\ma A) = \det(\ma A^T)$ & $\det(\ma A^{-1}) = \det(\ma A)^{-1}$
+	\end{tabular*}
+	$\det(\ma A\ma B) = \det(\ma A)\det(\ma B) = \det(\ma B)\det(\ma A) = \det(\ma B\ma A)$\\
+	Hat $\ma A$ 2 linear abhäng. Zeilen/Spalten $\Rightarrow |\ma A|=0$ \\
+	Entwicklung. n. $j$ter Zeile: $|\ma A|=\sum\limits_{i=1}^n (-1)^{i+j} \cdot a_{ij} \cdot |\ma A_{ij}|$\\
+
+	\subsubsection{Eigenwerte $\lambda$ und Eigenvektoren $\underline v$}
+	\framebox[\columnwidth]{\large $\ma A \vec v = \lambda \vec v$ \qquad $\det \ma A = \prod \lambda_i$ \qquad $\Sp \ma A = \sum a_{ii} = \sum \lambda_i$}\\
+	Eigenwerte: $\det(\ma A - \lambda \ma 1) = 0$ Eigenvektoren: $\ker(\ma A - \lambda_i \ma 1) = \vec v_i$\\
+	EW von Dreieck/Diagonal Matrizen sind die Elem. der Hauptdiagonale.
+
+
+	\subsubsection{Spezialfall $2 \times 2$ Matrix $A$}
+	\parbox{3cm}{ $\det(\ma A) = ad-bc$ \\ $\Sp(\ma A) = a+d$ } $\mat{a & b\\ c & d}^{-1} = \frac{1}{\det \ma A} \mat{d & -b\\ -c& a}$\\
+	$\lambda_{1/2} = \frac{\Sp \ma A}{2} \pm \sqrt{ \left( \frac{\mathrm{sp} \ma A}{2} \right)^2 - \det \ma A }$
+
+
+	\subsubsection{Spezielle Matrizen}
+	Diagonalmatrix $\ma D$:  $\det \ma D = \prod d_{i}$\\
+	$\ma D^{-1} =\operatorname{diag} \left(d_1, \dots, d_n\right)^{-1} = \operatorname{diag} \left(d_1^{-1}, \dots, d_n^{-1}\right)$\\
+\end{sectionbox}
+
+
+\begin{sectionbox}
+	\subsection{Algebraische Strukturen $S(*)$}
+	Menge $S$ mit binären Verknüpfungen $*:S\times S \rightarrow S$, deren Elemente bestimmte Axiome erfüllen ($a,b,c \in S$):
+	\begin{itemize}\itemsep0pt
+		\item Assoziativ: $(a* b) * c = a * (b * c)$
+		\item Neutrales Element: $\forall a \exists_1 e \in S: a * e = e * a = a$ % \quad (meist $0$ oder $1$)
+		\item Inverses Element: $\forall a \exists_1 a^{-1} \in S: a * a^{-1} = e$
+		\item Kommutativ: $a * b = b * a$
+		\item Distributiv: $a \cdot (b+c)=a\cdot b + a \cdot c$		
+	\end{itemize}
+
+	\begin{tablebox}{ll}
+		Struktur & Definition \\ \cmrule
+		Halbgruppe $(S,*)$ & $*$ ist assoziativ \\
+		Monoid $(S,*)$ & Halbgruppe mit neutralem Element $e$\\
+		Gruppe $(S,*)$ & Monoid mit Inversem $^{-1}$\\
+		Abelsche Gruppe $(S,*)$ & Gruppe, so dass $*$ kommutativ ist.\\
+		Ring $(S,+,\cdot)$ & abelsche Gruppe $(S,+)$, \\ & Halbgruppe $(S,\cdot)$, Distributivgesetz \\
+		Körper $(S,+,\cdot)$ & Ring mit abelscher Gruppe $(S\setminus\{ 0 \}, \cdot)$\\
+	\end{tablebox}
+\end{sectionbox}
+
+
+
+\begin{sectionbox}
+	\subsection{Mengen}
+	% =============================================================================================
+	Eine Menge ist eine Zusammenfassung bestimmter, wohlunterschiedener Elemente zu einem Ganzen.
+	Es gibt zwei Möglichkeiten eine Menge zu definieren:\\
+	1. Angabe durch explizite Aufzählung der Elemente: $A=\{1;2;3\}$\\
+	2. Angabe von Eigenschaften aller Elemente: $A=\{n\in\mathbb N\ \vert\ 0<n<4\}$\\
+	
+		\subsection{Wichtige Mengen}
+		\begin{tablebox}{rll}
+			$\emptyset$ & $=\{ \}$ & Leere Menge\\
+			$\mathbb N$ & $=\{1,2,3,4,5,\dotsc\}$ & Natürliche Zahlen \\
+			$\mathbb Z$ & $=\{\dotsc ,-2,-1,0,1,2,\dotsc\}$ & Ganze Zahlen \\
+			$\mathbb Q$ & $=\iset {\frac m n}{  m \in \mathbb Z, n \in \mathbb N }$ & Rationale Zahlen\\
+			$\mathbb R$ & $=\{\dotsc ,-\sqrt{2},\dotsc,0,\dotsc,\pi,\dotsc\}$ & Reele Zahlen\\	
+			$\mathbb C$ & $=\mathbb R^2$ & Komplexe Zahlen\\
+			$\mathbb B$ & $=\{ 0,1 \}$ & Binäre Zahlen\\		
+			$\mathbb S$ & $=\{ -1,0,1 \}$ & Vorzeichenmenge\\	
+			$\mathcal K[x]$ & & Polynomring\\ 		
+		\end{tablebox}
+\end{sectionbox}
 
 
 
@@ -1083,7 +1269,7 @@ end
 	$\norm{\ma{A}}_M$ & $n\cdot\underset{i,j}{\max}\abs{a_{ij}}$ & Gesamtnorm, Matrixnorm\\
 	$\norm{\ma{A}}_\infty$ & $\underset{i}{\max}\sum\limits_{j=1}^n\abs{a_{ij}}$ & Zeilennorm (max Zeilensumme)\\
 	$\norm{\ma{A}}_1$ & $\underset{j}{\max}\sum\limits_{i=1}^n\abs{a_{ij}}$ & Spaltennorm (max Spaltensumme)\\
-	$\norm{\ma{A}}_E$ & $\sqrt{\sum\limits_{i=1}\sum\limits_{j=1}\abs{a_{ij}}^2}$ & $\underset{\text{euklidische Norm}}{\text{Frobeniusnorm}}$ $(||\ma{I}||_E = \sqrt{n})$\\
+	$\norm{\ma{A}}_E$ & $\sqrt{\sum\limits_{i=1}\sum\limits_{j=1}\abs{a_{ij}}^2}$ & $\underset{\text{euklidische Norm}}{\text{Frobeniusnorm}}$ $(||\ma{1}||_E = \sqrt{n})$\\
 	$\norm{\ma{A}}_\lambda$ & $\sqrt{\lambda_\text{max}(\ma{A}^T\cdot\ma{A})}$ & Spektralnorm, Hilbertnorm \\
 \end{tabular}
 
