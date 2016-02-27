@@ -82,12 +82,28 @@ escapeinside={\%*}{*)}					% if you want to add a comment within your code
 
 \section{Grundlagen}
 \begin{sectionbox}
-\begin{tablebox}{@{\extracolsep\fill}lp{5cm}@{}}
-	Numerik & liefert eine zahlenmäßige Lösung eines Problems mit einem Algorithmus.\\
-	Kondition & Ein Maß wie stark sich Eingabefehler auf die Ausgabe auswirken. $\kappa = \frac{\norm{\delta f}}{\norm{\delta x}} \ra |f'(x)|$\\
-	$f(x)$ & Mathematisches Problem $f$ mit exakter Eingabe $x$\\
-	$\tilde f(\tilde x)$ & Numerischer Algorithmus $\tilde f$ mit gerundeter Eingabe $\tilde x$\\
-\end{tablebox}
+	\subsection[Numerik]{Numerik $f(x) = y \quad \Ra \quad \tilde f(\tilde x) = \tilde y$} 
+	liefert eine zahlenmäßige Lösung eines Problems mit einem Algorithmus\\[-1em]
+	\begin{symbolbox}
+		\begin{tabular*}{\columnwidth}{@{\ }l@{\ }l@{\qquad}l@{\ }l@{}}
+			$f$ & Mathematisches Problem & $\tilde f$ & Numerischer Algorithmus\\
+			$x$ & exakte Problemdaten & $\tilde x$ & gerundete Problemdaten\\
+			$y$ & exaktes Ergebnis & $\tilde y$ & gerundetes Ergebnis\\
+		\end{tabular*}
+	\end{symbolbox}
+
+	\subsection{Fehlertypen}
+	\textbf{Datenfehler:} Eingabedaten aus ungenauer Messung\\
+	\textbf{Verfahrensfehler:} Diskretisierung von Gleichungen, Endliche Iteration\\
+	\textbf{Rundungsfehler:} (Zwischen-)Ergebnisse nur mit Maschinengenauigkeit 
+
+	\subsection{Numerische Qualitätsmerkmale}	
+	\textbf{Konsistenz:} Wie gut löst das Verfahren tatsäch. das Problem $\tilde f(x)\!\ra\!y$?\\
+	Residuum $R < C \cdot h^p$ \quad Schrittweite $h$, Konsistenzordn. $p$\\
+	\textbf{Kondition:} Wie stark schwankt das Problem bei Störung $f(\tilde x)\!\ra\!y$ ?\\[0.1em]
+	%\textbf{Stabilität:} Ein Algorithmus der ein gut konditioniertes Problem mit einem konsistenten Verfahren löst, ist stabil. $\tilde f(\tilde x) \ra y$
+	\textbf{Stabilität:} Wie stark schwankt das Verfahren bei Störung $\tilde f(\tilde x)\!\ra\!\tilde f(x)$
+	\textbf{Konvergenz:} Algorithmus stabil und konsistent:  $\tilde f(\tilde x)\!\ra\!\tilde f(x)\!\ra\!y$
 \end{sectionbox}
 
 \begin{sectionbox}
@@ -97,45 +113,34 @@ escapeinside={\%*}{*)}					% if you want to add a comment within your code
 	\begin{equation*}
 		\rho(\ma{A}) = \max_i \abs{\lambda_i}
 	\end{equation*}
-
 \subsection{Diagonaldominanz}
 Diagonalelemente sind größer als die restlichen Elemente der selben Zeile:\\
-\begin{equation*}
-\ma{A} = (a_{ij}) \begin{aligned} \text{diagonaldominant} \\ \text{strikt diagonaldominant}\end{aligned} \Leftrightarrow \abs{a_{ii}} \begin{aligned} \ge \\ > \end{aligned} \sum\limits_{j = 1, j \ne i}^n \abs{a_{ij}}\ \forall i
-\end{equation*}
-
+$\ma{A} = (a_{ij}) \begin{aligned} \text{diagonaldominant} \\ \text{strikt diagonaldominant}\end{aligned} \Leftrightarrow \abs{a_{ii}} \begin{aligned} \ge \\ > \end{aligned} \sum\limits_{j = 1, j \ne i}^n \abs{a_{ij}}\ \forall i$
 \subsection{Definitheit}
-\begin{equation*}
-\ma{A} \begin{aligned} \text{positiv definit} \\ \text{ positiv semidefinit}\end{aligned} \Leftrightarrow \lambda_i \begin{aligned} > \\ \ge \end{aligned} 0\ \forall i \qquad\text{bzw.}\qquad\vec{x}^T \ma{A} \vec{x} \begin{aligned} > \\ \ge \end{aligned} 0\ \forall \vec{x} \ne 0
-\end{equation*}
+$\ma{A} \begin{aligned} \text{positiv definit} \\ \text{ positiv semidefinit}\end{aligned} \Leftrightarrow \lambda_i \begin{aligned} > \\ \ge \end{aligned} 0\ \forall i \qquad\text{bzw.}\qquad\vec{x}^T \ma{A} \vec{x} \begin{aligned} > \\ \ge \end{aligned} 0\ \forall \vec{x} \ne 0$
 \end{sectionbox}
+
+
+
+
+
 
 \begin{sectionbox}
 	\subsection{Kondition}
-	Verstärkung von Eingangsfehler im ungünstigsten Fall.
-	\begin{symbolbox}
-		\begin{tabularx}{\columnwidth}{lXlX}
-			$y = f(x)$ & Unbekannte & $x$ & Problemdaten
-		\end{tabularx}
-	\end{symbolbox}
+	Ein Maß wie stark sich Eingabefehler auf die Ausgabe auswirken.
 	$\kappa_{\ir abs}(x) = \abs{f'(x)}$ \qquad\qquad $\kappa_{\ir rel}(x) = \abs{\frac{f'(x)}{\frac{f(x)}{x}}} = \frac{\abs{f'(x)} \cdot \abs{x}}{\abs{f(x)}}$\\
 	Falls $\kappa_{\ir rel} \ll 100$: gute Konditionierung\\
-	\\
 	Verkettung $h = g(f(x))$ \quad $\kappa^h_{\ir abs}(x) = \kappa^g_{\ir abs}(f(x))\kappa^f_{\ir abs}(x)$\\
 	\begin{equation*}
-		\cond(\ma{A}) = \norm{\ma{A}^{-1}} \cdot \norm{\ma{A}}
+		\text{für } \vec y = \ma A \vec x \qquad \Ra \quad \cond(\ma{A}) = \norm{\ma{A}^{-1}} \cdot \norm{\ma{A}}
 	\end{equation*}
 	$\cond(\ma{A}) \ra \infty$ schlecht, $\cond(\ma{A}) \ra 1$ gut
 
 	\subsection{Fehler}
 	Absolut: $\norm{\tilde f(x) - f(x)}$ \qquad\qquad Relativ: $\frac{\norm{\tilde f(x) - f(x)}}{\norm{f(x)}}$
 
-	\subsection{Residuum}
-	bezeichnet die Abweichung vom gewünschten Ergebnis, wenn Näherungslösungen eingesetzt werden.\\
-	Residuum klein $\Rightarrow$ relativer Fehler $\ll 1$.
-	\begin{equation*}
-		\vec r = \vec b - \ma A\vec x
-	\end{equation*}
+	\subsection[Residuum]{Residuum $\vec r = \vec b - \ma A\vec x$}
+	bezeichnet die Abweichung vom gewünschten Ergebnis, wenn Näherungslösungen eingesetzt werden. $\vec r$ klein $\Rightarrow$ rel. Fehler $\ll 1$.
 \end{sectionbox}
 
 \begin{sectionbox}
@@ -355,8 +360,9 @@ Exakte Lösung $x*$, Fehler $\epsilon=x-x*$
 \end{sectionbox}
 
 \begin{sectionbox}
-\subsection{Fixpunktiteration}
-NST-Problem als FP-Problem: $x = F(x) + x$ 
+\subsection{Fixpunktiteration (alg. Iterationsverfahren)}
+Jedes Problem $f(x) = g(x)$ lässt sich als Fixpunktproblem schreiben:\\
+$x^* = Φ(x^*) := f(x) - g(x) + x$
 \begin{equation*}
 	x^{(k + 1)} = \Phi(x^{(k)})
 \end{equation*}
@@ -384,6 +390,7 @@ Falls $\Phi'(x^\star) = 0$ und $\Phi''(x^\star) \ne 0 \Rightarrow$ quadratische 
 \end{equation*}
 
 \subsubsection{Konvergenz}
+%Falls $\abs{\Phi'(x^\star)} < 1 \Rightarrow$ Konvergenz bzw. stabiler Fixpunkt \\
 Falls $f'(x^\star) \ne 0$ (einfache Nullstelle) $\Rightarrow$ quadratische Konvergenz mit
 \begin{equation*}
 	\varepsilon^{(k + 1)} = \frac{1}{2} \frac{f''(x^\star)}{f'(x^\star)} {\varepsilon^{(k)}}^2
@@ -430,6 +437,17 @@ Falls die Auswertung von $f'(x)$ vermieden werden soll:
 \end{tablebox}
 $\ma A = \ma D + \ma L + \ma U$, keine LR-Zerlegung!
 \end{sectionbox}
+
+
+
+\begin{sectionbox}
+	\subsection{Allgemeines Iterationsverfahren}
+	Mit beliebiger, invertierbarer Matrix $\ma C \in \R^{n \times n}$ gilt Umformung:\\
+	$\ma A \vec x\!=\!\vec b \Leftrightarrow \ma C \vec x = \ma C \vec x - \ma A \vec x + \vec b \Leftrightarrow \vec x = (\ma 1 - \ma C^{-1} \ma A) \vec x + \ma C^{-1} \vec b$\\
+	Wähle $\ma K = (\ma 1 - \ma C^{-1} \ma A)$ (alles vor dem $\vec x$)\\
+	Verfahren konvergiert allgemein, wenn Spektralradius $\rho(\ma{K}) < 1$\\
+\end{sectionbox}
+
 
 \begin{sectionbox}
 \subsection{Jacobi-Verfahren}
@@ -536,21 +554,22 @@ $\ma A = \ma L \cdot \ma R$ \quad mit $\ma R$ obere Dreiecksmatrix ($\rang \ma A
 			Vorwärtseinsetzen & $n^2 - n$\\
 			Rückwärtseinsetzen & $n^2$\\
 	\end{tablebox}
+	Bei symmetrischer Matrix für LU Zerlegung halbiert.\\
+	Aufwand für Berechnung von $\ma A^{-1}: n^3 + n^2 ∈ \mathcal O(n^3)$
 \end{sectionbox}
 
 \begin{sectionbox}
-\begin{cookbox}{LR-Zerlegung mit Gaußverfahren}
-	\item Zerlegen des Problems $\ma A \vec x = \vec b$ in das Problem $\ma L (\ma R \vec x) = \vec b$  mit $\ma A = \ma L \ma R$ bzw. $\ma L \vec y = \ma P \vec b$ (mit Pivotisierung)
-	\item Zerlegungsmatrix (für $2 \times 2$): \\ $\ma A = \mat{a & b \\ c & d} \ra \mat{a & b \\ \frac{c}{a} & d - \frac{c}{a} b} = \ma A^*$ mit den Eliminationsfaktoren $l_{ik} = \frac{a_{ik}}{a_{kk}} \overset{z.B.}{=} \frac{c}{a}$
+\begin{cookbox}{LR-Zerlegung mit Gaußverfahren $\ma A = \ma L \ma R$; $\ma P^{-1} = \ma P^\top$}
+	\item Sortiere Zeilen von $\ma A$ mit $\ma P$ so dass $a_{11} > ... > a_{n1}$
+	\item Zerlegen von $\ma P \ma A \vec x = \vec b$ zu $\ma L (\ma R \vec x) = \ma L \vec y = \ma P^\top \vec b$ mit\\
+		$\underset{\text{(Beispiel für } 2 \times 2)}{\text{Zerlegungsmatrix:}}$ $\ma A = \mat{a & b \\ c & d} \ra \mat{a & b \\ \frac{c}{a} & d - \frac{c}{a} b} = \ma A^*$ \\
+		mit den Eliminationsfaktoren $l_{ik} = \frac{a_{ik}}{a_{kk}} \overset{z.B.}{=} \frac{c}{a}$
 	\item Für jede Spalte der unteren Dreiecksmatrix wiederholen.\\
-		 Für eine $3 \times 3$ Matrix bräuchte man 2 Durchläufe, da 3 Spalten Elimationsfaktoren bestimmt werden müssen.
-	\item $\ma R = \texttt{triu}(\ma A^*)$\\
-	 (obere Dreiecksmatrix von $\ma A^*$, inkl. Diagonalelemente)
-	\item $\ma L = \texttt{tril}(\ma A^*,-1)+\ma 1$\\
-	 (untere Dreiecksmatrix mit $1$en auf der Diagonale.
-	\item \textbf{Vorwärtseinsetzen:} $\ma L \vec y = \vec b$ bzw. $\ma L \vec y = \ma P \vec b$ (mit Pivotisierung)\quad (Löse nach $\vec y$)
+		 Für eine $n \times n$ Matrix braucht man $n-1$ Durchläufe
+	\item $\ma R = \text{triu}(\ma A^*)$ \quad (obere $\triangle$-Matr. von $\ma A^*$, inkl. Diagonalelem.)
+	\item $\ma L = \text{tril}(\ma A^*,-1)+\ma 1$ \quad (untere $\triangle$-Matr. mit $1$en auf Diag.)
+	\item \textbf{Vorwärtseinsetzen:} $\ma L \vec y = \vec b$ bzw. $\ma L \vec y = \ma P^\top \vec b$ \quad (Löse nach $\vec y$)
 	\item \textbf{Rückwärtseinsetzen:} $\ma R \vec x = \vec y$ \quad (Löse nach $\vec x$)
-
 \end{cookbox}
 \end{sectionbox}
 
@@ -588,6 +607,7 @@ $\ma A = \ma L \cdot \ma R$ \quad mit $\ma R$ obere Dreiecksmatrix ($\rang \ma A
 	Erhalte Ortho\textbf{normal}system durch $\vec b_i' = \vec b_i/\norm{\vec b_i}$\\
 	QR-Zerlegung: $\ma A = \ma Q \ma R$ mit $\ma Q = \big[\vec b_1', ... , \vec b_n'\big]$ \quad $\ma R = \ma Q^\top \ma A$
 \end{sectionbox}
+
 
 
 
@@ -641,6 +661,7 @@ $
 \textbf{CRS} & \texttt{rowptr}(i) zeigt auf j-tes Element von \texttt{col}\\
 \textbf{CCS} & \texttt{colptr}(i) zeigt auf j-tes Element von \texttt{row}\\
 \end{tabularx}
+rowptr(1)=1, rowptr(n)=n+1, gibt an, bei welchem element (in col) die neue Zeile beginnt. 
 \end{sectionbox}
 
 
@@ -693,6 +714,7 @@ $
 \end{equation*}
 
 \subsubsection{Differenzen}
+$f[x_i] = f(x_i)$ \qquad $f[x_i, x_{i+1}] = \frac{f[x_{i + 1}] - f[x_i]}{x_{i+1} - x_i}$
 \begin{equation*}
 	f[x_i, \dots, x_j] = \frac{f[x_{i + 1}, \dots, x_j] - f[x_i, \dots x_{j - 1}]}{x_j - x_i}
 \end{equation*}
@@ -715,7 +737,12 @@ falls $n = 1$:
 \begin{equation*}
 	\int_a^b f(x) \diff x \approx (b - a) \frac{f(a) + f(b)}{2}
 \end{equation*}
-\textbf{Allgemein:}
+\textbf{Zusammengesetztes Trapez: } $n = $\#Kanten = \#Stützstellen - 1
+\begin{equation*}
+	\int_a^b f(x) \diff x \approx  \frac{h}{2} \sum\limits_{k = 0}^{n-1} \left( f(x_k) + f(x_{k+1})  \right)
+\end{equation*}
+
+\textbf{Allgemein:} 
 \begin{equation*}
 	\int_a^b f(x) \diff x \approx h \left( \frac{f(a) + f(b)}{2} + \sum_{k = 1}^{n - 1} f(a + k \cdot h) \right)
 \end{equation*}
@@ -817,12 +844,12 @@ $\vec l = \begin{bmatrix}
 
 	\subsubsection{Polynomial Least Squares}
 	\begin{equation*}
-		f_{\vec \alpha}(x) = P(x, \vec \alpha) = a_k x^k + \ldots + a_1 x + a_0
+		f_{\vec \alpha}(x) = P(x, \vec \alpha) = \alpha_k x^k + \ldots + \alpha_1 x + \alpha_0
 	\end{equation*}
 	\begin{equation*}
-		\argmin_{\alpha_0, \ldots, \alpha_k} E_k(\alpha_0, \ldots, \alpha_k) = \sum_{i = 1}^k \left( y_i - P(x_i) \right)^2
+		\argmin_{\alpha_0, \ldots, \alpha_{k-1}} E_n(\alpha_0, \ldots, \alpha_{k-1}) = \sum_{i = 1}^{n} \left( y_i - P(\vec \alpha, x_i) \right)^2
 	\end{equation*}	
-	Minimierung durch Ableitung: $\forall i\in[0,n]:\frac{\partial E_n}{\partial a_i} \stackrel{!}{=} 0$
+	Minimierung durch Ableitung: $\forall i\in[0,k-1]:\frac{\partial E_n}{\partial α_j} \stackrel{!}{=} 0$
 \end{sectionbox}
 
 \begin{sectionbox}
@@ -842,26 +869,29 @@ $\norm{\vec b - \ma A \vec x}^2 = \norm{\ma Q^\top (\vec b - \ma A \vec x)}^2 = 
 \section{Numerische Lösung von Differentialgleichungen}
 % ======================================================================================
 \begin{sectionbox}
-\textbf{Ausgangsproblem:}
+\textbf{Ausgangsproblem: DGL}
 \begin{equation*}
 	\dot{x}(t) = f(x(t))
 \end{equation*}
+Idee: Anstatt die Funktion $x(t)$ zu bestimmen, wird versucht die Lösung $x(t=t^*)$ für ein bestimmtes $t^*$ zu finden. Man kennt bereits eine Lösung $x(t_0)$ und hangelt sich von dort mit Schritten $x(t_0 + Δtν)$ (Schrittweite $\Delta t$, $ν$-ter Schritt) nach vorne bis man $x(t^*)$ erreicht.
 \begin{equation*}
-	\hat{x}(\nu) = x(t_0 + \Delta t \nu)
+	\hat{x}(ν) \hateq \hat{x}^{(\nu)} = x(t_0 + \Delta t \nu)
 \end{equation*}
 \begin{equation*}
-	\hat{f}(\nu) = f(t_0 + \Delta t \nu)
+	\hat{f}(\nu) \stackrel{\wedge}{=} f(t_0 + \Delta t \nu)
 \end{equation*}
+
 
 \subsection{Expliziter Euler}
 \begin{equation*}
-	\hat{x}(\nu + 1) = \hat{x}(\nu) + \Delta t \hat{f}(\nu)
+	\hat{x}^{(\nu + 1)} = \hat{x}^{(\nu)} + \Delta t \cdot \hat{f}\left(\hat{x}^{(\nu)}\right)
 \end{equation*}
-stabil für $0 < Δt < 2$, instabil für $Δt >$ 
+stabil für $0 < Δt < 2$, instabil für $Δt > 2$ 
 \subsection{Impliziter Euler}
 \begin{equation*}
-	\hat{x}(\nu + 1) = \hat{x}(\nu) + \Delta t \hat{f}(\nu + 1)
+	\hat{x}^{(\nu + 1)} = \hat{x}^{(\nu)} + \Delta t \cdot \hat{f}\left(\hat{x}^{(\nu + 1)}\right)
 \end{equation*}
+Löse Gleichung nach $\hat{x}^{(\nu + 1)} $
 
 \subsection{Trapez}
 \begin{equation*}
@@ -870,7 +900,7 @@ stabil für $0 < Δt < 2$, instabil für $Δt >$
 \end{sectionbox}
 
 \begin{sectionbox}
-\subsection{Gear}
+\subsection[Gear]{Gear $\mathcal O((Δt)^2)$}
 \begin{equation*}
 	\hat{x}(\nu + 2) = \frac{4}{3} \hat{x}(\nu + 1) - \frac{1}{3} \hat{x}(\nu) + \frac{2}{3} \Delta t \hat{f}(\nu + 2)
 \end{equation*}
@@ -895,6 +925,23 @@ $k=3$ & $\frac{5}{12}$ & $-\frac{16}{12}$ & $\frac{23}{12}$ & \\
 $k=4$ & $-\frac{9}{24}$ & $\frac{37}{24}$ & $-\frac{59}{24}$ & $\frac{55}{24}$
 \end{tabularx}
 \end{sectionbox}
+
+
+
+\begin{sectionbox}
+\subsection{Finite Differenzen}
+Stützstellen $t_0, ... t_n$\\
+\textbf{Vorwärtsdifferenz} mit $x(t_n)$ bekannt:\\
+$\frac{1}{h} \mat{ -1 & 1 & & \\ & -1 & 1 & \\ & & .. & .. \\ & & & h } \vect{ x(t_0) \\ x(t_1) \\ .. \\ x(t_n)} = \vect{ \dot x(t_0) \\ \dot x(t_1) \\ .. \\ \dot x(t_n)}$\\
+\\
+\textbf{Rückwärtsdifferenz} mit $x(t_0)$ bekannt:\\
+$\frac{1}{h} \mat{ h & & & \\ -1 & 1 & & \\ & .. & .. & \\ & & -1 & 1 } \vect{ x(t_0) \\ x(t_1) \\ .. \\ x(t_n)} = \vect{ \dot x(t_0) \\ \dot x(t_1) \\ .. \\ \dot x(t_n)}$\\
+Für zweite Ableitung immer -1, 2, -1 in einer Zeile\\
+
+\end{sectionbox}
+
+
+
 
 \section{Matlab Sample Code}
 \begin{lstlisting}
@@ -1141,11 +1188,79 @@ end
 
 
 
+\section{Sonstiges}
+
+\begin{sectionbox}
+	\subsection{Graphen $G = (V,E)$}
+	$m$ Knoten (\textbf{v}ertices) $v_i$, $n$ Kanten (\textbf{e}dges) $e_j$\\
+	einfach/multi: nur eine/mehrere Kanten zwischen zwei Knoten\\
+	gerichtet: Kanten nur in eine Richtung. \quad gewichtet: Kanten haben Werte\\
+	Zyklus: Gleicher Start und Endknoten $v_{\ir start} = v_{\ir end}$\\
+	Pfad: Alle Knoten verschieden $v_k \ne v_l$\\
+	Kreis: Zyklus und Pfad zusammen\\
+	\\
+	\textbf{Adjazenzmatrix} $\ma A = (a_{ij}) \in \B^{\abs{V} \times \abs{V}}$: \\
+	$a_{ij} = \begin{cases} 1 & \text{falls } v_i \text{ mit } v_j \text{ verbunden ist} \\ 0 & \text{sonst} (∄e:(v_i, v_j)∈e) \end{cases}$\\
+	$\ma A$ immer symmetrisch, geht nur für ungerichtete Graphen!\\
+	\\
+	\textbf{Inzidenzmatrix} $\ma B = (b_{ij}) \in \B^{\abs{V} \times \abs{E}}$: \\
+	$b_{ij} = \begin{cases} -1 & \text{falls } e_j \text{ bei } v_i \text{ startet } (e_j = (v_i, v_x)) \\ 1 & \text{falls } e_j \text{ bei } v_i \text{ endet } (e_j = (v_x, v_i))\\ 0 & \text{sonst } (v_i ∉ e_j) \end{cases}$\\
+	Jede Zeile (für jede Kante) enthält genau einmal $1$ und $-1$\\
+	Rang von $\ma B$: $|V| -$\#zusammenhängende Gebiete. Maximal $|V| - 1$!
+	Nullraum $\ker \ma B$: Vektoren der Gebiete. Also mindestens $\vec 1 ∈ \ker \ma B$\\
+	\\
+	\textbf{Laplacematrix} $\ma L = \ma B^\top \ma B = (l_{ij}) \in \B^{\abs{V} \times \abs{V}}$\\
+	$l_{ij} = \begin{cases} d_i & \text{falls } i=j \text{ und genau } d_i \text{ Kanten von } v_i \text{weggehen}\\ -1 & \text{falls } i≠j \text{ und die Kante } (v_i, v_j) \text{ existiert }\\ 0 & \text{sonst} \end{cases}$\\
+\end{sectionbox}
+
+
+\begin{sectionbox}
+	\subsection{Kirchhoff (Inzidenzmatrix B)}
+	KCL: $\ma B^\top \vec i = \vec 0$ \quad KVL: $\vec u - \ma B \vec u_{\ir knoten} = \vec 0$ \quad Ohm: $\vec i = \ma G \cdot \vec u$
+\end{sectionbox}
+
+\begin{sectionbox}
+	\subsection{Komplexität / Landau-Notation}
+	Definiert Zeit und Platzbedarf von Algorithmen ($\exists c \in \R\forall n > n_0$)\\[-1em]
+	\begin{tablebox}{l@{\quad $\Ra$ \quad}l}
+		$f \in \mathcal O \bigl(g(n)\bigr)$ & $0 \le f(n) \le c \cdot g(n)$\\
+		$f \in \Omega \bigl(g(n)\bigr)$ & $f(n) \ge c \cdot g(n) \ge 0$\\
+		$f \in \Theta \bigl( g(n) \bigr)$ &  $c_1 \cdot g(n) \le f(n) \le c_2 \cdot g(n)$\\
+	\end{tablebox}
+	\subsubsection*{Schrankenfunktionen (für große $n \in \N$)}
+	$1<\log_{10}(n)<\ln(n)<\log_2(n)<\sqrt{n}<n<n\cdot \ln(n)<(\log n)! <n^2 < e^n < n! < n^n < 2^{2^n}$	
+\end{sectionbox}
+
+
+\begin{sectionbox}
+	\subsection{Gleitkommadarstellung nach IEEE 754}
+	Bitverteilung(single/double):\\
+	\begin{tabular}{|c|c|c|} \hline 
+		$s(1)$ & \quad $e(8/11)$ \qquad & \qquad\qquad\qquad $f(23/52)$ \qquad\qquad\qquad\qquad \\ \hline
+	\end{tabular} \\[0.5em]
+	$s$: Vorzeichen, $e$: Exponent, $f$: Mantisse\\
+	Wert $Z = (-1)^s \cdot  1.f \cdot 2^{e-127}$ \qquad Genauigkeit: $M = 2^{-f}$
+\end{sectionbox}
+
+
+\begin{sectionbox}
+	\subsection[Singulärwertszerlegung]{Singulärwertszerlegung $\ma A ∈ \K^{m \times n} = \ma U \ma{Σ} \ma V^\top$}
+	Zerlegung in zwei Rotationen und eine Streckung:\\
+	$\ma U∈\K^{m\times m}, \ma V∈\K^{n\times n}$: orthonormale Rotationsmatrizen\\
+	$\ma{Σ}∈\K^{m\times n}$: $\ma 1\vec{σ}$ ergänzt mit 0en damit $\dim \ma{Σ} = \dim \ma A$
+
+	\begin{cookbox}{Singulärwertszerlegung}
+		\item Bestimme $n$ EW $\lambda_i$ von $\ma A^\top \ma A$, sortiere $\lambda_1 \ge ... \ge \lambda_n \ge 0$\\ Erhalten $n$ Singulärwerte $σ_i = \sqrt{λ_i}$
+		\item Bestimme ONB $\ma V = [\vec v_1,... , \vec v_n]$ aus EV von $\ma A^\top \cdot \ma A$
+		\item Bestimme ONB $\ma U = [\vec u_1,... , \vec u_k]$ mit $\vec u_i =\frac{1}{\sigma_i}\ma A \vec v_i$\\ $k= \min(m,n)$, falls $n < m$: Ergänze $\ma U$ zu ONB des $\K^m$
+		\item Berechne $\underset{m \times n}{\ma \Sigma}  = \underset{m \times m}{\ma U^\top} \!\cdot\! \underset{m \times n}{\ma A} \!\cdot\! \underset{n \times n}{\ma V}$ \quad ($\ma U, \ma V$ sind orthogonal)
+	\end{cookbox}
+\end{sectionbox}
 
 
 
 
-
+Stabilität: Falls Fehler < $κσ\epsilon$ und $σ$ kleiner als ausgeführte Iterationen
 
 
 \end{document}
