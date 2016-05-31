@@ -1,15 +1,13 @@
 % Formelsammlung Numerische Methoden der Elektrotechnik
 %
 % Geschrieben im SS 2014 an der TU München
-% von Markus Hofbauer, Kevin Meyer und Benedikt Schmidt für LaTeX4EI (latex4ei.de)
+% von Markus Hofbauer, Kevin Meyer und Benedikt Schmidt für LaTeX4EI
+% based on template from www.latex4ei.de
 % Kontakt: latex@kevin-meyer.de oder via Kontaktformular auf http://latex4ei.de
 % Aktuelle Versionen auf https://makeappdev.github.io/TUM-Projekte/
 
 % Dokumenteinstellungen
 % ======================================================================
-
-
-% Dokumentklasse (Schriftgröße 6, DIN A4, Artikel)
 \documentclass[german]{latex4ei/latex4ei_sheet}
 
 \usepackage[european]{circuitikz}
@@ -58,9 +56,12 @@ escapeinside={\%*}{*)}					% if you want to add a comment within your code
 % SI-Zahlen mit Komma als Dezimaltrenner
 \sisetup{locale=DE}
 
-% Eigener Inhalt für Center-Teil des Footers
-\title{Numerische Methoden der Elektrotechnik}
-\author{von Markus Hofbauer, Kevin Meyer und Benedikt Schmidt - Kontakt:  \href{mailto:latex@kevin-meyer.de}{\textit{latex@kevin-meyer.de}}}
+% SI-Einheiten
+\DeclareSIUnit\voltampere{VA}
+\DeclareSIUnit\var{Var}
+\DeclareSIUnit\newtonmeter{Nm}
+\DeclareSIUnit\voltsecond{Vs}
+\DeclareSIUnit\amperesecond{As}
 
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator{\cond}{cond}
@@ -69,15 +70,18 @@ escapeinside={\%*}{*)}					% if you want to add a comment within your code
 \DeclareMathOperator{\Bild}{Bild}
 \DeclareMathOperator{\defect}{def}
 
+% Title
+\title{Numerische Methoden der Elektrotechnik}
+\author{Markus Hofbauer, Kevin Meyer und Benedikt Schmidt}
+\myemail{latex@kevin-meyer.de}
+\mywebsite{https://makeappdev.github.io/TUM-Projekte/}
 
 % Dokumentbeginn
 % ======================================================================
 \begin{document}
 
-%\IfFileExists{git.id}{\input{git.id}}{}
-%\ifdefined\GitRevision\fancyfoot[R]{Stand: \GitNiceDate \ (git \GitRevision) \qquad \thepage}\fi
-
-% Aufteilung in Spalten
+\IfFileExists{git.id}{\input{git.id}}{}
+\ifdefined\GitRevision\mydate{\GitNiceDate\ (git \GitRevision)}\fi
 
 \maketitle
 
