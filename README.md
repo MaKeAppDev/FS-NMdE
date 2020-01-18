@@ -1,40 +1,27 @@
 # Numerische Methoden der Elektrotechnik
-[![wercker status](https://app.wercker.com/status/f482e051deca271f9ec2119eb1b43564/s "wercker status")](https://app.wercker.com/project/bykey/f482e051deca271f9ec2119eb1b43564)
+
+[![Build Status](https://travis-ci.org/MaKeAppDev/FS-NMdE.svg?branch=master)](https://travis-ci.org/MaKeAppDev/FS-NMdE)
+[![Join the chat at https://gitter.im/LaTeX4Ei/Lobby](https://badges.gitter.im/LaTeX4Ei/Lobby.svg)](https://gitter.im/LaTeX4Ei/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Formelsammlung für Latex4ei
+
 **Required custom Package on GitHub:** [LaTeX4Ei](https://github.com/latex4ei/latex4ei-packages)
 
-### Links
-
-Fresh Development Version: [TUM-Projekte](https://makeappdev.github.io/TUM-Projekte/)  
-Public Version: [latex4ei.de](http://latex4ei.de)
-
-## Written by
-- Hofbauer, Markus
-- Meyer, Kevin
-- Schmidt, Benedikt
-
---------------------------------------
-
-### Upstream Repository: [TemplateFs](https://github.com/MaKeAppDev/TemplateFs)
-
-add upstream:
-
-    git remote add upstream git@github.com:MaKeAppDev/TemplateFs.git
-
-pull from upstream:
-
-    git pull upstream master
-
---------------------------------------
+Public Version: [latex4ei.de](http://latex4ei.de) or [TUM-Projekte](https://makeappdev.github.io/TUM-Projekte/)
 
 ## Optional: Build with CMake
-Download [UseLaTeX.cmake](https://cmake.org/Wiki/CMakeUserUseLATEX) and move to `/usr/share/cmake-X.X/Modules/.`  
 
-##### Steps to build:
+Download [UseLaTeX.cmake](https://cmake.org/Wiki/CMakeUserUseLATEX) and move to `/usr/share/cmake-X.X/Modules/.`
+
 ```shell
 mkdir build
 cd build
 cmake ..
 make
 ```
+
+## Written by
+
+- Hofbauer, Markus
+- Meyer, Kevin
+- Schmidt, Benedikt
